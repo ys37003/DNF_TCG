@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     private Phase phase;
 
-//    private PlayerInfo[] = new 
+    //private PlayerInfo[] = new 
 
     public void NextPhase()
     {
