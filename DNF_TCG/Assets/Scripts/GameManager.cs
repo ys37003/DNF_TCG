@@ -14,7 +14,10 @@ public class GameManager : MonoBehaviour
 
     private Phase phase;
 
-    //private PlayerInfo[] = new 
+    void Awake()
+    {
+
+    }
 
     public void NextPhase()
     {

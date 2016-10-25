@@ -13,8 +13,10 @@ public class Card : MonoBehaviour
 
     public UITexture CardFront, CardBack;
     public UIButton Button;
-    public TweenRotation tweenRotation;
 
+    public TweenRotation TweenRt;
+
+    public CardState State = CardState.Deck;
     public CardData data { get; set; }
 
     void Awake()
@@ -27,28 +29,49 @@ public class Card : MonoBehaviour
         data = CardData.temp;
     }
 
-    private void onClickCard()
+    public void Reverse()
     {
-        CardController.Instance.Show(this);
-        StartCoroutine("Reverse");
+        StartCoroutine("Reverse_");
     }
 
-    bool isPlaying = false;
-    IEnumerator Reverse()
+    public void Move(Transform target)
     {
-        if (isPlaying == true)
+        transform.parent = target.transform;
+        StartCoroutine("Move_");
+    }
+
+    bool isReverse = false;
+    IEnumerator Reverse_()
+    {
+        if (isReverse == true)
             yield break;
 
-        isPlaying = true;
-        TweenRotation.Begin(gameObject, 0.5f, Quaternion.Euler(0, transform.eulerAngles.y + 180, 0));
+        isReverse = true;
 
+        TweenRotation.Begin(gameObject, 0.5f, Quaternion.Euler(-0.1f, transform.eulerAngles.y + 180, 0));
         yield return new WaitForSeconds(0.25f);
+
         CardBack.depth *= -1;
-
         yield return new WaitForSeconds(0.25f);
-        isPlaying = false;
+
+        isReverse = false;
     }
-    
+
+    bool isMove = false;
+    IEnumerator Move_()
+    {
+        if (isMove == true)
+            yield break;
+
+        isMove = true;
+
+        TweenPosition.Begin(gameObject, 0.5f, Vector3.zero);
+        TweenScale.Begin(gameObject, 0.5f, Vector3.one);
+        yield return new WaitForSeconds(0.5f);
+
+        isMove = false;
+    }
+
     /// <summary>
     /// cast, levelup, set, equip...
     /// </summary>
@@ -82,6 +105,10 @@ public class Card : MonoBehaviour
         return true;
     }
 
+    private void onClickCard()
+    {
+        CardController.Instance.Show(this);
+    }
 
     /*
         Hand

@@ -17,4 +17,5 @@ public class CardSlot : MonoBehaviour
     }
 
     public SlotType Type;
-}
+    public int CardCount { get { return transform.childCount; } }
+} 
