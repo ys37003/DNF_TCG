@@ -16,14 +16,5 @@ public class LevelUp : Card
         base.Action();
         Move(target);
         grid.Reposition();
-        if (isEnemy)
-        {
-            Reverse();
-        }
-        else
-        {
-            Angle();
-        }
-
     }
 }

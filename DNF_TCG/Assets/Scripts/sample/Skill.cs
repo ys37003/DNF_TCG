@@ -12,17 +12,5 @@ public class Skill : Card
 
     public override void Action()
     {
-        UIGrid grid = transform.parent.GetComponent<UIGrid>();
-        base.Action();
-        Move(target);
-        grid.Reposition();
-        if (isEnemy)
-        {
-            Reverse();
-        }
-        else
-        {
-            Angle();
-        }
     }
 }

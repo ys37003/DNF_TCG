@@ -16,13 +16,5 @@ public class Effect : Card
         base.Action();
         Move(target);
         grid.Reposition();
-        if (isEnemy)
-        {
-            Angle();
-        }
-        else
-        {
-            Reverse();
-        }
     }
 }

@@ -24,8 +24,8 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    Server server;
-    Client client;
+    private Server server = null;
+    private Client client = null;
     
     void Awake()
     {

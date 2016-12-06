@@ -21,12 +21,12 @@ public class PlayerInfo : MonoBehaviour
             CardDic.Add(type, new List<Card>());
         }
 
-        List<CardSlot> slotList = new List<CardSlot>(goField.GetComponentsInChildren<CardSlot>());
-        foreach (CardSlot slot in slotList)
-        {
-            CardSlotDic[slot.Type] = slot;
-        }
-        CardSlotDic[SlotType.Hand] = goHand.GetComponent<CardSlot>();
+        //List<CardSlot> slotList = new List<CardSlot>(goField.GetComponentsInChildren<CardSlot>());
+        //foreach (CardSlot slot in slotList)
+        //{
+        //    CardSlotDic[slot.Type] = slot;
+        //}
+        //CardSlotDic[SlotType.Hand] = goHand.GetComponent<CardSlot>();
     }
 
     void Start()
@@ -65,14 +65,6 @@ public class PlayerInfo : MonoBehaviour
             Card card = CardDic[SlotType.Deck][DeckSize- i];
             CardDic[SlotType.Hand].Add(card);
             card.Move(CardSlotDic[SlotType.Hand].transform);
-            if(isEnemy)
-            {
-                card.Angle();
-            }
-            else
-            {
-                card.Reverse();
-            }
         }
 
         CardDic[SlotType.Deck].RemoveRange(DeckSize - count + 1, count);

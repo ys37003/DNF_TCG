@@ -11,7 +11,7 @@ public class Card : MonoBehaviour
         Field,
     }
 
-    public UITexture CardFront, CardBack;
+    public SpriteRenderer CardFront, CardBack;
     public UIButton Button;
 
     public CardState State = CardState.Deck;
@@ -36,7 +36,6 @@ public class Card : MonoBehaviour
 
     public void Reverse()
     {
-        StartCoroutine("Reverse_");
     }
 
     public void Move(Transform target)
@@ -45,54 +44,11 @@ public class Card : MonoBehaviour
         StartCoroutine("Move_");
     }
 
-    public void Angle()
-    {
-        StartCoroutine("Angle_");
-    }
-
-    bool isReverse = false;
-    IEnumerator Reverse_()
-    {
-        if (isReverse == true)
-            yield break;
-
-        isReverse = true;
-
-        TweenRotation.Begin(gameObject, 0.5f, Quaternion.Euler(-0.1f, transform.eulerAngles.y + 180, 0));
-        yield return new WaitForSeconds(0.25f);
-
-        CardBack.depth *= -1;
-        yield return new WaitForSeconds(0.25f);
-
-        isReverse = false;
-    }
-
-    bool isMove = false;
     IEnumerator Move_()
     {
-        if (isMove == true)
-            yield break;
-
-        isMove = true;
-
         TweenPosition.Begin(gameObject, 0.5f, Vector3.zero);
         TweenScale.Begin(gameObject, 0.5f, Vector3.one);
         yield return new WaitForSeconds(0.5f);
-
-        isMove = false;
-    }
-
-    IEnumerator Angle_()
-    {
-        if (isReverse == true)
-            yield break;
-
-        isReverse = true;
-
-        TweenRotation.Begin(gameObject, 0.5f, Quaternion.Euler(-0.1f, transform.eulerAngles.y, 0));
-        yield return new WaitForSeconds(0.25f);
-
-        isReverse = false;
     }
 
 
@@ -131,14 +87,7 @@ public class Card : MonoBehaviour
 
     private void onClickCard()
     {
-        if(isEnemy)
-        {
-            Action();
-        }
-        else
-        {
-            CardController.Instance.Show(this);
-        }
+        CardController.Instance.Show(this);
     }
 
     /*
