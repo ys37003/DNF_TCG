@@ -29,9 +29,6 @@ public class CardController : MonoBehaviour
 
     private Card card;
 
-    //임시
-    public Transform tf;
-
     void Awake()
     {
         btnList = new List<UIButton>(GetComponentsInChildren<UIButton>());
@@ -39,8 +36,7 @@ public class CardController : MonoBehaviour
 
         EventDelegate.Add(btnList[0].onClick, () =>
         {
-            card.Move(tf);
-            card.Reverse();
+            card.Action();
             gameObject.SetActive(false);
         });
     }
@@ -50,7 +46,7 @@ public class CardController : MonoBehaviour
         this.card = card;
 
         transform.position = UICamera.lastWorldPosition;
-        transform.localPosition = new Vector3(transform.localPosition.x + 100, transform.localPosition.y - 150, 0);
+        btnList[0].GetComponentInChildren<UILabel>().text = card.text;
 
         gameObject.SetActive(true);
     }

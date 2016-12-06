@@ -11,6 +11,7 @@ public class PlayerInfo : MonoBehaviour
 
     public GameObject goField, goHand;
 
+    public bool isEnemy;
     public int DeckSize { get { return CardDic[SlotType.Deck].Count - 1; } }
 
     void Awake()
@@ -64,7 +65,14 @@ public class PlayerInfo : MonoBehaviour
             Card card = CardDic[SlotType.Deck][DeckSize- i];
             CardDic[SlotType.Hand].Add(card);
             card.Move(CardSlotDic[SlotType.Hand].transform);
-            card.Reverse();
+            if(isEnemy)
+            {
+                card.Angle();
+            }
+            else
+            {
+                card.Reverse();
+            }
         }
 
         CardDic[SlotType.Deck].RemoveRange(DeckSize - count + 1, count);

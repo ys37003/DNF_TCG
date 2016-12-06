@@ -14,10 +14,11 @@ public class Card : MonoBehaviour
     public UITexture CardFront, CardBack;
     public UIButton Button;
 
-    public TweenRotation TweenRt;
-
     public CardState State = CardState.Deck;
     public CardData data { get; set; }
+
+    public bool isEnemy;
+    public string text;
 
     void Awake()
     {
@@ -29,6 +30,10 @@ public class Card : MonoBehaviour
         data = CardData.temp;
     }
 
+    public virtual void Action()
+    {
+    }
+
     public void Reverse()
     {
         StartCoroutine("Reverse_");
@@ -38,6 +43,11 @@ public class Card : MonoBehaviour
     {
         transform.parent = target.transform;
         StartCoroutine("Move_");
+    }
+
+    public void Angle()
+    {
+        StartCoroutine("Angle_");
     }
 
     bool isReverse = false;
@@ -71,6 +81,20 @@ public class Card : MonoBehaviour
 
         isMove = false;
     }
+
+    IEnumerator Angle_()
+    {
+        if (isReverse == true)
+            yield break;
+
+        isReverse = true;
+
+        TweenRotation.Begin(gameObject, 0.5f, Quaternion.Euler(-0.1f, transform.eulerAngles.y, 0));
+        yield return new WaitForSeconds(0.25f);
+
+        isReverse = false;
+    }
+
 
     /// <summary>
     /// cast, levelup, set, equip...
@@ -107,7 +131,14 @@ public class Card : MonoBehaviour
 
     private void onClickCard()
     {
-        CardController.Instance.Show(this);
+        if(isEnemy)
+        {
+            Action();
+        }
+        else
+        {
+            CardController.Instance.Show(this);
+        }
     }
 
     /*
