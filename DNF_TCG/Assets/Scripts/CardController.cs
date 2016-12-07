@@ -45,7 +45,7 @@ public class CardController : MonoBehaviour
     {
         this.card = card;
 
-        transform.position = UICamera.lastWorldPosition;
+        transform.localPosition = UICamera.lastEventPosition - new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
         btnList[0].GetComponentInChildren<UILabel>().text = card.text;
 
         gameObject.SetActive(true);

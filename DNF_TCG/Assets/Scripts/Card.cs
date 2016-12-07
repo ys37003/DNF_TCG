@@ -90,6 +90,30 @@ public class Card : MonoBehaviour
         CardController.Instance.Show(this);
     }
 
+    public void TestSend()
+    {
+        TestPacket tp = new TestPacket();
+        tp.hi = 5;
+        tp.hello = "hello";
+
+        Protocol p = new Protocol();
+        p.Send(tp, (packet) =>
+        {
+            Debug.Log((packet as TestPacket).hi);
+            Debug.Log((packet as TestPacket).hello);
+        });
+    }
+
+    public void TestReceive()
+    {
+        Protocol p = new Protocol();
+        p.Receive(new TestPacket(), (packet) =>
+        {
+            Debug.Log((packet as TestPacket).hi);
+            Debug.Log((packet as TestPacket).hello);
+        });
+    }
+
     /*
         Hand
         시전

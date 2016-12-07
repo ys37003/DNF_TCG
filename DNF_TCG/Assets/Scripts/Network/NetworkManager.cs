@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,6 +27,20 @@ public class NetworkManager : MonoBehaviour
 
     private Server server = null;
     private Client client = null;
+
+    public Socket Socket
+    {
+        get
+        {
+            if (server != null)
+                return server.ServerSock;
+
+            if (client != null)
+                return client.ClientSock;
+
+            return null;
+        }
+    }
     
     void Awake()
     {

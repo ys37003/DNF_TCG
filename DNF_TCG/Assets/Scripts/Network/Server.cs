@@ -9,6 +9,16 @@ public class Server
     private TcpListener lit_Listener = null;
     public bool IsReady { get; private set; }
 
+    public Socket ServerSock
+    {
+        get
+        {
+            return lit_Listener != null
+                 ? lit_Listener.Server
+                 : null;
+        }
+    }
+
     public void Close()
     {
         if (lit_Listener == null)

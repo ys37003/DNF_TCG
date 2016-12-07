@@ -8,6 +8,12 @@ public enum PacketType
     Start = 1,
 }
 
+public class TestPacket : Packet
+{
+    public int hi;
+    public string hello;
+}
+
 public class Packet
 {
     public int packet_Type;

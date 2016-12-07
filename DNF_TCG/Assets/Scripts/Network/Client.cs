@@ -8,6 +8,8 @@ public class Client
     private Socket client = null;
     public bool IsReady { get; private set; }
 
+    public Socket ClientSock { get { return client; } }
+
     public void Close()
     {
         if (client == null)
@@ -26,8 +28,7 @@ public class Client
         // Establish the remote endpoint for the socket.
         // The name of the 
         // remote device is "host.contoso.com".
-        //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-        IPAddress ipAddress = Dns.GetHostAddresses("10.0.1.6")[0]; //ipHostInfo.AddressList[1];
+        IPAddress ipAddress = Dns.GetHostAddresses("10.0.1.6")[0];
         IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
         // Create a TCP/IP socket.
