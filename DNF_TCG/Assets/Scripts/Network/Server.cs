@@ -7,16 +7,10 @@ using System;
 public class Server
 {
     private TcpListener lit_Listener = null;
-    public bool IsReady { get; private set; }
+    public bool IsConnect { get; private set; }
 
     private Socket connectedSock;
-    public Socket ConnectedSock
-    {
-        get
-        {
-            return connectedSock;
-        }
-    }
+    public  Socket ConnectedSock { get { return connectedSock; } }
 
     public void Close()
     {
@@ -24,7 +18,7 @@ public class Server
             return;
 
         lit_Listener.Stop();
-        IsReady = false;
+        IsConnect = false;
     }
 
     public void Start(int port)
@@ -35,7 +29,7 @@ public class Server
         lit_Listener = new TcpListener(Dns.GetHostAddresses("10.0.1.6")[0], port);
         lit_Listener.Start();
         lit_Listener.BeginAcceptSocket(new AsyncCallback(AcceptCallback), lit_Listener);
-        IsReady = false;
+        IsConnect = false;
     }
 
     void AcceptCallback(IAsyncResult ar)
@@ -50,7 +44,7 @@ public class Server
             connectedSock = listener.EndAcceptSocket(ar);
 
             Debug.Log(string.Format("Socket connected to {0}", connectedSock.RemoteEndPoint.ToString()));
-            IsReady = true;
+            IsConnect = true;
         }
         catch (Exception e)
         {

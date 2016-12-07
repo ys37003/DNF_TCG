@@ -73,8 +73,8 @@ public class NetworkManager : MonoBehaviour
 
     IEnumerator WaitConnect()
     {
-        while ((server != null && !server.IsReady) ||
-               (client != null && !client.IsReady))
+        while ((server != null && !server.IsConnect) ||
+               (client != null && !client.IsConnect))
         {
             yield return null;
         }

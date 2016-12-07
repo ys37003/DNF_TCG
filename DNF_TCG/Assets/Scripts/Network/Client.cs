@@ -6,7 +6,7 @@ using System;
 public class Client
 {
     private Socket client = null;
-    public bool IsReady { get; private set; }
+    public bool IsConnect { get; private set; }
 
     public Socket ClientSock { get { return client; } }
 
@@ -17,7 +17,7 @@ public class Client
 
         client.Shutdown(SocketShutdown.Both);
         client.Close();
-        IsReady = false;
+        IsConnect = false;
     }
 
     public void Start(int port)
@@ -35,7 +35,7 @@ public class Client
         client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         // Connect to the remote endpoint.
         client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
-        IsReady = false;
+        IsConnect = false;
     }
 
     private void ConnectCallback(IAsyncResult ar)
@@ -49,7 +49,7 @@ public class Client
             client.EndConnect(ar);
 
             Debug.Log(string.Format("Socket connected to {0}", client.RemoteEndPoint.ToString()));
-            IsReady = true;
+            IsConnect = true;
         }
         catch (Exception e)
         {
