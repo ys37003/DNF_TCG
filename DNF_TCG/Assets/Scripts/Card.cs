@@ -88,7 +88,7 @@ public class Card : MonoBehaviour
     private void onClickCard()
     {
         CardController.Instance.Show(this);
-        TestSend();
+        TestReceive();
     }
 
     public void TestSend()

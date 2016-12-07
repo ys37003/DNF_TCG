@@ -9,13 +9,12 @@ public class Server
     private TcpListener lit_Listener = null;
     public bool IsReady { get; private set; }
 
-    public Socket ServerSock
+    private Socket connectedSock;
+    public Socket ConnectedSock
     {
         get
         {
-            return lit_Listener != null
-                 ? lit_Listener.Server
-                 : null;
+            return connectedSock;
         }
     }
 
@@ -48,9 +47,9 @@ public class Server
 
             // End the operation and display the received data on the
             //console.
-            Socket handler = listener.EndAcceptSocket(ar);
+            connectedSock = listener.EndAcceptSocket(ar);
 
-            Debug.Log(string.Format("Socket connected to {0}", handler.RemoteEndPoint.ToString()));
+            Debug.Log(string.Format("Socket connected to {0}", connectedSock.RemoteEndPoint.ToString()));
             IsReady = true;
         }
         catch (Exception e)

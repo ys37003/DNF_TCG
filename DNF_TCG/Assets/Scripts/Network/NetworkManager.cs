@@ -33,7 +33,7 @@ public class NetworkManager : MonoBehaviour
         get
         {
             if (server != null)
-                return server.ServerSock;
+                return server.ConnectedSock;
 
             if (client != null)
                 return client.ClientSock;

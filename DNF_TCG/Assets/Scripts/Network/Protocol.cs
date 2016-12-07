@@ -21,7 +21,7 @@ public class Protocol
     public void Send(Packet packet, ResultCallback callback)
     {
         byte[] buffer = new byte[1024 * 4];
-        Packet.Serialize(packet).CopyTo(buffer,0);
+        Packet.Serialize(packet).CopyTo(buffer, 0);
         AsyncObject ao = new AsyncObject(buffer.Length);
         ao.Buffer = buffer;
         ao.WorkingSocket = Socket;
@@ -37,7 +37,7 @@ public class Protocol
 
         int receiveBytes = ao.WorkingSocket.EndReceive(ar);
 
-        if(receiveBytes > 0)
+        if (receiveBytes > 0)
         {
 
         }
@@ -59,6 +59,15 @@ public class Protocol
         byte[] buffer = Packet.Serialize(packet);
         AsyncObject ao = new AsyncObject(buffer.Length);
         resultCallback = callback;
-        Socket.BeginReceive(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback), ao);
+        Socket.BeginReceive(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback2), ao);
+    }
+
+    private void receiveCallback2(IAsyncResult ar)
+    {
+        AsyncObject ao = (AsyncObject)ar.AsyncState;
+
+        Packet packet = (Packet)Packet.Deserialize(ao.Buffer);
+
+        ao.WorkingSocket.BeginSend(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback), ao);
     }
 }
