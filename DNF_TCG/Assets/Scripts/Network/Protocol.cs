@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using UnityEngine;
 
 public class AsyncObject
 {
@@ -10,6 +11,15 @@ public class AsyncObject
         Buffer = new byte[bufferSize];
     }
 }
+
+public class Log : MonoBehaviour
+{
+    public static void DebugLog(string str)
+    {
+        Debug.Log(str);
+    }
+}
+
 
 public class Protocol
 {
@@ -36,10 +46,11 @@ public class Protocol
         Socket handler = ao.WorkingSocket;
 
         int receiveBytes = ao.WorkingSocket.EndReceive(ar);
-
         if (receiveBytes > 0)
         {
-
+            TestPacket packet = (TestPacket)Packet.Deserialize(ao.Buffer);
+            Log.DebugLog("sendCallback" + packet.hi.ToString());
+            Log.DebugLog("sendCallback" + packet.hello);
         }
 
         handler.BeginReceive(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback), ao);
@@ -66,7 +77,13 @@ public class Protocol
     {
         AsyncObject ao = (AsyncObject)ar.AsyncState;
 
-        Packet packet = (Packet)Packet.Deserialize(ao.Buffer);
+        int receiveBytes = ao.WorkingSocket.EndReceive(ar);
+        if (receiveBytes > 0)
+        {
+            TestPacket packet = (TestPacket)Packet.Deserialize(ao.Buffer);
+            Log.DebugLog("receiveCallback2" + packet.hi.ToString());
+            Log.DebugLog("receiveCallback2" + packet.hello);
+        }
 
         ao.WorkingSocket.BeginSend(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback), ao);
     }
