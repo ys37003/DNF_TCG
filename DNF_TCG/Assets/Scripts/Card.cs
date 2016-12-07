@@ -88,6 +88,7 @@ public class Card : MonoBehaviour
     private void onClickCard()
     {
         CardController.Instance.Show(this);
+        TestSend();
     }
 
     public void TestSend()
@@ -97,7 +98,7 @@ public class Card : MonoBehaviour
         tp.hello = "hello";
 
         Protocol p = new Protocol();
-        p.Send(tp, (packet) =>
+        p.Send(tp as Packet, (packet) =>
         {
             Debug.Log((packet as TestPacket).hi);
             Debug.Log((packet as TestPacket).hello);

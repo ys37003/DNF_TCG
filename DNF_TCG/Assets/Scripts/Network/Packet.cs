@@ -8,12 +8,14 @@ public enum PacketType
     Start = 1,
 }
 
+[Serializable]
 public class TestPacket : Packet
 {
     public int hi;
     public string hello;
 }
 
+[Serializable]
 public class Packet
 {
     public int packet_Type;
@@ -34,7 +36,7 @@ public class Packet
             bf.Serialize(ms, data);
             return ms.ToArray();
         }
-        catch
+        catch(Exception e)
         {
             return null;
         }

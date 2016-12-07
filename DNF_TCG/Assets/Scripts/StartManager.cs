@@ -22,14 +22,14 @@ public class StartManager : MonoBehaviour
         if(isWait == false && InputRoomNumber.value != "")
         {
             isWait = true;
-            InputRoomNumber.enabled = false;
+            BtnJoinRoom.isEnabled = false;
             labelCreateRoom.text = "대기중/취소";
             NetworkManager.Instance.CreateRoom(int.Parse(InputRoomNumber.value));
         }
         else
         {
             isWait = false;
-            InputRoomNumber.enabled = true;
+            BtnJoinRoom.isEnabled = false;
             labelCreateRoom.text = "방만들기";
             NetworkManager.Instance.DestroyRoom();
         }

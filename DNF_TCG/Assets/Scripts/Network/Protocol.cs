@@ -20,7 +20,8 @@ public class Protocol
 
     public void Send(Packet packet, ResultCallback callback)
     {
-        byte[] buffer = Packet.Serialize(packet);
+        byte[] buffer = new byte[1024 * 4];
+        Packet.Serialize(packet).CopyTo(buffer,0);
         AsyncObject ao = new AsyncObject(buffer.Length);
         ao.Buffer = buffer;
         ao.WorkingSocket = Socket;
