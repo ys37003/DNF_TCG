@@ -23,7 +23,7 @@ public class Server
         if (lit_Listener != null)
             return;
 
-        lit_Listener = new TcpListener(Dns.GetHostEntry(Dns.GetHostName()).AddressList[1], port);
+        lit_Listener = new TcpListener(Dns.GetHostAddresses("10.0.1.6")[0], port);
         lit_Listener.Start();
         lit_Listener.BeginAcceptSocket(new AsyncCallback(AcceptCallback), lit_Listener);
         IsReady = false;
