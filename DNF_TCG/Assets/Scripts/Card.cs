@@ -25,7 +25,7 @@ public class Card : MonoBehaviour
         EventDelegate.Add(Button.onClick, onClickCard);
     }
 
-    public void Init()
+    public void InitCard()
     {
 
     }
