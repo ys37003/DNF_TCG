@@ -38,7 +38,9 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if(NetworkManager.Instance.IsServer)
+        CardDataManager instnace = CardDataManager.Instance;
+
+        if (!NetworkManager.Instance.IsServer)
         {
             Packet pack = new Packet();
             pack.SetInt(2);
