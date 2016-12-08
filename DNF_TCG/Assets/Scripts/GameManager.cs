@@ -41,8 +41,8 @@ public class GameManager : MonoBehaviour
         if(NetworkManager.Instance.IsServer)
         {
             Packet pack = new Packet();
-            pack.SetInt(1);
             pack.SetInt(2);
+            pack.SetInt(1);
 
             Protocol.DeckInit.Send(pack, (packet) =>
             {
@@ -56,8 +56,8 @@ public class GameManager : MonoBehaviour
             Protocol.DeckInit.Receive((packet) =>
             {
                 Debug.Log("ReciveResultCallback");
-                Info[0].InitDeckData(CardDataManager.Instance.GetDeck(packet.GetInt(1)));
-                Info[1].InitDeckData(CardDataManager.Instance.GetDeck(packet.GetInt(0)));
+                Info[0].InitDeckData(CardDataManager.Instance.GetDeck(packet.GetInt(0)));
+                Info[1].InitDeckData(CardDataManager.Instance.GetDeck(packet.GetInt(1)));
             }, (packet) =>
             {
                 Debug.Log("ReciveReturnCallback");

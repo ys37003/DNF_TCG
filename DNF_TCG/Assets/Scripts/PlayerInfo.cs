@@ -34,7 +34,7 @@ public class PlayerInfo : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine("DumyDraw");
+        //StartCoroutine("DumyDraw");
     }
 
     IEnumerator DumyDraw()
