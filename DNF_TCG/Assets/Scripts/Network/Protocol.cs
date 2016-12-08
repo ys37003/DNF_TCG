@@ -32,7 +32,6 @@ public class Protocol
 
     private int no;
     private string name;
-    //private Packet returnPacket;
 
     private Socket Socket { get { return NetworkManager.Instance.Socket; } }
 
@@ -54,14 +53,6 @@ public class Protocol
     {
         AsyncObject ao = (AsyncObject)ar.AsyncState;
         ao.WorkingSocket.BeginReceive(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(resultCallback), ao);
-
-        //int receiveBytes = ao.WorkingSocket.EndReceive(ar);
-        //if (receiveBytes > 0)
-        //{
-        //    TestPacket packet = (TestPacket)Packet.Deserialize(ao.Buffer);
-        //    Debug.Log("sendCallback" + packet.hi.ToString());
-        //    Debug.Log("sendCallback" + packet.hello);
-        //}
     }
 
     private void resultCallback(IAsyncResult ar)
@@ -69,21 +60,14 @@ public class Protocol
         AsyncObject ao = (AsyncObject)ar.AsyncState;
         Packet packet = (Packet)Packet.Deserialize(ao.Buffer);
 
-        if (SendResultCallbackDic[no] == null)
+        if (SendResultCallbackDic[packet.ProtocolNo] == null)
             return;
 
-        SendResultCallbackDic[no](packet);
+        SendResultCallbackDic[packet.ProtocolNo](packet);
     }
 
-    public void Receive(/*Packet packet, */ResultCallback callback)
+    public void Receive(ResultCallback callback)
     {
-        //returnPacket = packet;
-        //packet.ProtocolNo = no;
-
-        //Packet packet = new Packet();
-        //packet.ProtocolNo = no;
-        //byte[] buffer = Packet.Serialize(packet);
-
         AsyncObject ao = new AsyncObject(1024 * 4);
         ao.Buffer = new byte[1024 * 4];
         ao.WorkingSocket = Socket;
@@ -98,17 +82,9 @@ public class Protocol
         AsyncObject ao = (AsyncObject)ar.AsyncState;
         Packet packet = (Packet)Packet.Deserialize(ao.Buffer);
 
-        if (SendResultCallbackDic[no] == null)
+        if (ReceiveResultCallbackDic[packet.ProtocolNo] == null)
             return;
 
-        ReceiveResultCallbackDic[no](packet);
-
-        //byte[] buffer = Packet.Serialize(returnPacket);
-
-        //ao = new AsyncObject(buffer.Length);
-        //ao.Buffer = buffer;
-        //ao.WorkingSocket = handler;
-
-        //ao.WorkingSocket.BeginSend(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(resultCallback), ao);
+        ReceiveResultCallbackDic[packet.ProtocolNo](packet);
     }
 }

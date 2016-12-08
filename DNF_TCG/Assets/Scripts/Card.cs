@@ -93,14 +93,14 @@ public class Card : MonoBehaviour
 
     public void TestSend()
     {
-        TestPacket tp = new TestPacket();
-        tp.hi = 5;
-        tp.hello = "hi";
+        Packet pck = new Packet();
+        pck.SetString("testString");
+        pck.SetFloat(1.4f);
 
-        Protocol.Test1.Send(tp, (packet) =>
+        Protocol.Test1.Send(new Packet(), (packet) =>
         {
-            Debug.Log("sendResultCallback" + (packet as TestPacket).hi);
-            Debug.Log("sendResultCallback" + (packet as TestPacket).hello);
+            Debug.Log("receiveResultCallback No.0, " + packet.GetString(0));
+            Debug.Log("receiveResultCallback No.1, " + packet.GetFloat(1));
         });
     }
 
@@ -108,8 +108,8 @@ public class Card : MonoBehaviour
     {
         Protocol.Test2.Receive((packet) =>
         {
-            Debug.Log("receiveResultCallback" + (packet as TestPacket).hi);
-            Debug.Log("receiveResultCallback" + (packet as TestPacket).hello);
+            Debug.Log("receiveResultCallback No.0, " + packet.GetString(0));
+            Debug.Log("receiveResultCallback No.1, " + packet.GetFloat(1));
         });
     }
 

@@ -25,59 +25,48 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    private Server server = null;
-    private Client client = null;
-
+    private ISocket socket = null;
     public Socket Socket
     {
         get
         {
-            if (server != null)
-                return server.ConnectedSock;
-
-            if (client != null)
-                return client.ClientSock;
+            if (socket != null)
+                return socket.Socket;
 
             return null;
         }
     }
-    
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        StartCoroutine("ChangeScene");
     }
 
     public void CreateRoom(int port)
     {
         // 서버오픈
-        server = new Server();
-        server.Start(port);
-        StartCoroutine("WaitConnect");
+        socket = new Server();
+        socket.Start(port);
     }
 
     public void DestroyRoom()
     {
-        if (server != null)
-        {
-            server.Close();
-        }
+        if (socket != null)
+            socket.Close();
     }
 
     public void JoinRoom(int port)
     {
         // 클라연결
-        client = new Client();
-        client.Start(port);
-        StartCoroutine("WaitConnect");
+        socket = new Client();
+        socket.Start(port);
     }
 
-    IEnumerator WaitConnect()
+    IEnumerator ChangeScene()
     {
-        while ((server != null && !server.IsConnect) ||
-               (client != null && !client.IsConnect))
-        {
+        while (Socket == null)
             yield return null;
-        }
 
         SceneManager.LoadScene("Play");
     }

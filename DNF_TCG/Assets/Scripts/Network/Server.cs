@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System;
 
-public class Server
+public class Server : ISocket
 {
     private TcpListener lit_Listener = null;
-    public bool IsConnect { get; private set; }
 
-    private Socket connectedSock;
-    public  Socket ConnectedSock { get { return connectedSock; } }
+    private Socket clientSock;
+    public Socket Socket { get { return clientSock; } }
 
     public void Close()
     {
@@ -18,7 +16,6 @@ public class Server
             return;
 
         lit_Listener.Stop();
-        IsConnect = false;
     }
 
     public void Start(int port)
@@ -29,22 +26,16 @@ public class Server
         lit_Listener = new TcpListener(Dns.GetHostAddresses("10.0.1.6")[0], port);
         lit_Listener.Start();
         lit_Listener.BeginAcceptSocket(new AsyncCallback(AcceptCallback), lit_Listener);
-        IsConnect = false;
     }
 
     void AcceptCallback(IAsyncResult ar)
     {
         try
         {
-            // Get the listener that handles the client request.
             TcpListener listener = (TcpListener)ar.AsyncState;
+            clientSock = listener.EndAcceptSocket(ar);
 
-            // End the operation and display the received data on the
-            //console.
-            connectedSock = listener.EndAcceptSocket(ar);
-
-            Debug.Log(string.Format("Socket connected to {0}", connectedSock.RemoteEndPoint.ToString()));
-            IsConnect = true;
+            Debug.Log(string.Format("Socket connected to {0}", clientSock.RemoteEndPoint.ToString()));
         }
         catch (Exception e)
         {
