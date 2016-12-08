@@ -99,21 +99,17 @@ public class Card : MonoBehaviour
 
         Protocol.Test1.Send(tp, (packet) =>
         {
-            Debug.Log("resultCallback" + (packet as TestPacket).hi);
-            Debug.Log("resultCallback" + (packet as TestPacket).hello);
+            Debug.Log("sendResultCallback" + (packet as TestPacket).hi);
+            Debug.Log("sendResultCallback" + (packet as TestPacket).hello);
         });
     }
 
     public void TestReceive()
     {
-        TestPacket tp = new TestPacket();
-        tp.hi = 10;
-        tp.hello = "hello";
-
-        Protocol.Test2.Receive(tp, (packet) =>
+        Protocol.Test2.Receive((packet) =>
         {
-            Debug.Log("resultCallback" + (packet as TestPacket).hi);
-            Debug.Log("resultCallback" + (packet as TestPacket).hello);
+            Debug.Log("receiveResultCallback" + (packet as TestPacket).hi);
+            Debug.Log("receiveResultCallback" + (packet as TestPacket).hello);
         });
     }
 
