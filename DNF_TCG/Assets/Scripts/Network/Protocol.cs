@@ -45,7 +45,7 @@ public class Protocol
         ao.Buffer = buffer;
         ao.WorkingSocket = Socket;
 
-        SendResultCallbackDic[no] += callback;
+        SendResultCallbackDic[no] = callback;
 
         Socket.BeginSend(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(sendCallback), ao);
     }
@@ -88,7 +88,7 @@ public class Protocol
         ao.Buffer = new byte[1024 * 4];
         ao.WorkingSocket = Socket;
 
-        ReceiveResultCallbackDic[no] += callback;
+        ReceiveResultCallbackDic[no] = callback;
 
         Socket.BeginReceive(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback), ao);
     }
