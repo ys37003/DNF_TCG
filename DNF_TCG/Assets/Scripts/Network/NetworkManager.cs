@@ -37,6 +37,8 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+    public bool IsServer { get; private set; }
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -48,6 +50,7 @@ public class NetworkManager : MonoBehaviour
         // 서버오픈
         socket = new Server();
         socket.Start(port);
+        IsServer = true;
     }
 
     public void DestroyRoom()
@@ -61,6 +64,7 @@ public class NetworkManager : MonoBehaviour
         // 클라연결
         socket = new Client();
         socket.Start(port);
+        IsServer = false;
     }
 
     IEnumerator ChangeScene()

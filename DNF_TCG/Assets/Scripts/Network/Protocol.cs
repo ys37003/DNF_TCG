@@ -16,11 +16,11 @@ public class AsyncObject
 
 public class Protocol
 {
-    public static Protocol Test1 = new Protocol(1, "TEST_1");
-    public static Protocol Test2 = new Protocol(1, "TEST_2");
+    public static Protocol DeckInit = new Protocol(1, "DECK_INIT");
 
     public static Dictionary<int, ResultCallback> SendResultCallbackDic = new Dictionary<int, ResultCallback>();
     public static Dictionary<int, ResultCallback> ReceiveResultCallbackDic = new Dictionary<int, ResultCallback>();
+    public static Dictionary<int, ResultCallback> ReceiveReturnCallbackDic = new Dictionary<int, ResultCallback>();
 
     public Protocol(int no, string name)
     {
@@ -66,15 +66,16 @@ public class Protocol
         SendResultCallbackDic[packet.ProtocolNo](packet);
     }
 
-    public void Receive(ResultCallback callback)
+    public void Receive(ResultCallback receiveCallback, ResultCallback returnCallback)
     {
         AsyncObject ao = new AsyncObject(1024 * 4);
         ao.Buffer = new byte[1024 * 4];
         ao.WorkingSocket = Socket;
 
-        ReceiveResultCallbackDic[no] = callback;
+        ReceiveResultCallbackDic[no] = receiveCallback;
+        ReceiveReturnCallbackDic[no] = returnCallback;
 
-        Socket.BeginReceive(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback), ao);
+        Socket.BeginReceive(ao.Buffer, 0, ao.Buffer.Length, SocketFlags.None, new AsyncCallback(this.receiveCallback), ao);
     }
 
     private void receiveCallback(IAsyncResult ar)
@@ -82,9 +83,20 @@ public class Protocol
         AsyncObject ao = (AsyncObject)ar.AsyncState;
         Packet packet = (Packet)Packet.Deserialize(ao.Buffer);
 
-        if (ReceiveResultCallbackDic[packet.ProtocolNo] == null)
-            return;
+        if (ReceiveResultCallbackDic[packet.ProtocolNo] != null)
+            ReceiveResultCallbackDic[packet.ProtocolNo](packet);
 
-        ReceiveResultCallbackDic[packet.ProtocolNo](packet);
+        Packet rPacket = new Packet();
+        rPacket.ProtocolNo = no;
+
+        if (ReceiveReturnCallbackDic[packet.ProtocolNo] != null)
+            ReceiveReturnCallbackDic[packet.ProtocolNo](packet);
+
+        byte[] buffer = Packet.Serialize(rPacket);
+        AsyncObject returnAo = new AsyncObject(buffer.Length);
+        returnAo.Buffer = buffer;
+        returnAo.WorkingSocket = ao.WorkingSocket;
+
+        returnAo.WorkingSocket.BeginSend(returnAo.Buffer, 0, returnAo.Buffer.Length, SocketFlags.None, null, returnAo);
     }
 }

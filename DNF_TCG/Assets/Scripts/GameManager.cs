@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private PlayerInfo[] Info = new PlayerInfo[2];
+
     public enum Phase
     {
         Start,
@@ -36,7 +38,31 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        if(NetworkManager.Instance.IsServer)
+        {
+            Packet pack = new Packet();
+            pack.SetInt(1);
+            pack.SetInt(2);
 
+            Protocol.DeckInit.Send(pack, (packet) =>
+            {
+                Debug.Log("SendResultCallback");
+                Info[0].InitDeckData(CardDataManager.Instance.GetDeck(1));
+                Info[1].InitDeckData(CardDataManager.Instance.GetDeck(2));
+            });
+        }
+        else
+        {
+            Protocol.DeckInit.Receive((packet) =>
+            {
+                Debug.Log("ReciveResultCallback");
+                Info[0].InitDeckData(CardDataManager.Instance.GetDeck(packet.GetInt(1)));
+                Info[1].InitDeckData(CardDataManager.Instance.GetDeck(packet.GetInt(0)));
+            }, (packet) =>
+            {
+                Debug.Log("ReciveReturnCallback");
+            });
+        }
     }
 
     public void NextPhase()

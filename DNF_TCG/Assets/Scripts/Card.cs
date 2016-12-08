@@ -25,9 +25,9 @@ public class Card : MonoBehaviour
         EventDelegate.Add(Button.onClick, onClickCard);
     }
 
-    void Start()
+    public void Init()
     {
-        data = CardData.temp;
+
     }
 
     public virtual void Action()
@@ -88,29 +88,29 @@ public class Card : MonoBehaviour
     private void onClickCard()
     {
         CardController.Instance.Show(this);
-        TestReceive();
+        //TestReceive();
     }
 
     public void TestSend()
     {
-        Packet pck = new Packet();
-        pck.SetString("testString");
-        pck.SetFloat(1.4f);
+        //Packet pck = new Packet();
+        //pck.SetString("testString");
+        //pck.SetFloat(1.4f);
 
-        Protocol.Test1.Send(new Packet(), (packet) =>
-        {
-            Debug.Log("receiveResultCallback No.0, " + packet.GetString(0));
-            Debug.Log("receiveResultCallback No.1, " + packet.GetFloat(1));
-        });
+        //Protocol.Test1.Send(new Packet(), (packet) =>
+        //{
+        //    Debug.Log("receiveResultCallback No.0, " + packet.GetString(0));
+        //    Debug.Log("receiveResultCallback No.1, " + packet.GetFloat(1));
+        //});
     }
 
     public void TestReceive()
     {
-        Protocol.Test2.Receive((packet) =>
-        {
-            Debug.Log("receiveResultCallback No.0, " + packet.GetString(0));
-            Debug.Log("receiveResultCallback No.1, " + packet.GetFloat(1));
-        });
+        //Protocol.Test2.Receive((packet) =>
+        //{
+        //    Debug.Log("receiveResultCallback No.0, " + packet.GetString(0));
+        //    Debug.Log("receiveResultCallback No.1, " + packet.GetFloat(1));
+        //});
     }
 
     /*

@@ -9,9 +9,10 @@ public class PlayerInfo : MonoBehaviour
     private Dictionary<SlotType, List<Card>> CardDic = new Dictionary<SlotType, List<Card>>();
     private Dictionary<SlotType, CardSlot> CardSlotDic = new Dictionary<SlotType, CardSlot>();
 
-    public GameObject goField, goHand;
+    [SerializeField]
+    private GameObject goField = null, goHand = null;
 
-    public bool isEnemy;
+    public int LifePoint { get; private set; }
     public int DeckSize { get { return CardDic[SlotType.Deck].Count - 1; } }
 
     void Awake()
@@ -21,18 +22,18 @@ public class PlayerInfo : MonoBehaviour
             CardDic.Add(type, new List<Card>());
         }
 
-        //List<CardSlot> slotList = new List<CardSlot>(goField.GetComponentsInChildren<CardSlot>());
-        //foreach (CardSlot slot in slotList)
-        //{
-        //    CardSlotDic[slot.Type] = slot;
-        //}
-        //CardSlotDic[SlotType.Hand] = goHand.GetComponent<CardSlot>();
+        List<CardSlot> slotList = new List<CardSlot>(goField.GetComponentsInChildren<CardSlot>());
+        foreach (CardSlot slot in slotList)
+        {
+            CardSlotDic[slot.Type] = slot;
+        }
+        CardSlotDic[SlotType.Hand] = goHand.GetComponent<CardSlot>();
+
+        InitDeck(new List<Card>(CardSlotDic[SlotType.Deck].transform.GetComponentsInChildren<Card>()));
     }
 
     void Start()
     {
-        // 임시
-        InitDeck(new List<Card>(CardSlotDic[SlotType.Deck].GetComponentsInChildren<Card>()));
         StartCoroutine("DumyDraw");
     }
 
@@ -58,11 +59,23 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
+    public void InitDeckData(List<CardData> cardDataList)
+    {
+        int i = 0;
+        while (0 != cardDataList.Count)
+        {
+            int index = Random.Range(0, cardDataList.Count - 1);
+            Card card = CardDic[SlotType.Deck][i++];
+            card.data = cardDataList[index];
+            card.Init();
+        }
+    }
+
     public void Draw(int count)
     {
         for (int i = 0; i < count; ++i)
         {
-            Card card = CardDic[SlotType.Deck][DeckSize- i];
+            Card card = CardDic[SlotType.Deck][DeckSize - i];
             CardDic[SlotType.Hand].Add(card);
             card.Move(CardSlotDic[SlotType.Hand].transform);
         }
