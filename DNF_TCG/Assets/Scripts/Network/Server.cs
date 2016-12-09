@@ -18,12 +18,12 @@ public class Server : ISocket
         lit_Listener.Stop();
     }
 
-    public void Start(int port)
+    public void Start(string ip, int port)
     {
         if (lit_Listener != null)
             return;
 
-        lit_Listener = new TcpListener(Dns.GetHostAddresses("10.0.1.6")[0], port);
+        lit_Listener = new TcpListener(Dns.GetHostAddresses(ip)[0], port);
         lit_Listener.Start();
         lit_Listener.BeginAcceptSocket(new AsyncCallback(AcceptCallback), lit_Listener);
     }

@@ -4,6 +4,6 @@ public interface ISocket
 {
     Socket Socket { get;}
 
-    void Start(int port);
+    void Start(string ip, int port);
     void Close();
 }

@@ -108,6 +108,7 @@ public class PlayerInfo : MonoBehaviour
                 if (c.number == number)
                 {
                     c.Move(CardSlotDic[(SlotType)to].transform);
+                    return;
                 }
             }
         }

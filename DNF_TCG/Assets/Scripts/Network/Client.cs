@@ -18,12 +18,12 @@ public class Client : ISocket
         client.Close();
     }
 
-    public void Start(int port)
+    public void Start(string ip, int port)
     {
         if (client != null)
             return;
 
-        IPAddress ipAddress = Dns.GetHostAddresses("10.0.1.6")[0];
+        IPAddress ipAddress = Dns.GetHostAddresses(ip)[0];
         IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
         Socket tClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

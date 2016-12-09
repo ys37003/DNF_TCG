@@ -45,11 +45,11 @@ public class NetworkManager : MonoBehaviour
         StartCoroutine("ChangeScene");
     }
 
-    public void CreateRoom(int port)
+    public void CreateRoom(string ip, int port)
     {
         // 서버오픈
         socket = new Server();
-        socket.Start(port);
+        socket.Start(ip, port);
         IsServer = true;
     }
 
@@ -59,11 +59,11 @@ public class NetworkManager : MonoBehaviour
             socket.Close();
     }
 
-    public void JoinRoom(int port)
+    public void JoinRoom(string ip, int port)
     {
         // 클라연결
         socket = new Client();
-        socket.Start(port);
+        socket.Start(ip, port);
         IsServer = false;
     }
 

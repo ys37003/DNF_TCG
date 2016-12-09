@@ -2,7 +2,7 @@
 
 public class StartManager : MonoBehaviour
 {
-    public UIInput InputRoomNumber;
+    public UIInput InputIP, InputRoomNumber;
     public UIButton BtnCreateRoom, BtnJoinRoom, BtnExit;
 
     private UILabel labelCreateRoom;
@@ -24,7 +24,7 @@ public class StartManager : MonoBehaviour
             isWait = true;
             BtnJoinRoom.isEnabled = false;
             labelCreateRoom.text = "대기중/취소";
-            NetworkManager.Instance.CreateRoom(int.Parse(InputRoomNumber.value));
+            NetworkManager.Instance.CreateRoom(InputIP.value, int.Parse(InputRoomNumber.value));
         }
         else
         {
@@ -39,7 +39,7 @@ public class StartManager : MonoBehaviour
     {
         if(InputRoomNumber.value != "")
         {
-            NetworkManager.Instance.JoinRoom(int.Parse(InputRoomNumber.value));
+            NetworkManager.Instance.JoinRoom(InputIP.value, int.Parse(InputRoomNumber.value));
         }
     }
 

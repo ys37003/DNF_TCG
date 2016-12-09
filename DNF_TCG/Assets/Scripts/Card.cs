@@ -83,6 +83,7 @@ public class Card : MonoBehaviour
 
     IEnumerator Move_()
     {
+        TweenRotation.Begin(gameObject, 0.5f, new Quaternion(0,0,0,0));
         TweenPosition.Begin(gameObject, 0.5f, Vector3.zero);
         TweenScale.Begin(gameObject, 0.5f, Vector3.one);
         yield return new WaitForSeconds(0.5f);
