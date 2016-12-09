@@ -26,15 +26,15 @@ public class Client : ISocket
         IPAddress ipAddress = Dns.GetHostAddresses("10.0.1.6")[0];
         IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
-        client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
+        Socket tClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        tClient.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), tClient);
     }
 
     private void ConnectCallback(IAsyncResult ar)
     {
         try
         {
-            Socket client = (Socket)ar.AsyncState;
+            client = (Socket)ar.AsyncState;
             client.EndConnect(ar);
 
             Debug.Log(string.Format("Socket connected to {0}", client.RemoteEndPoint.ToString()));

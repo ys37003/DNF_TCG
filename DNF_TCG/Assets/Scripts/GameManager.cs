@@ -78,28 +78,28 @@ public class GameManager : MonoBehaviour
         phase++;
     }
 
-    IEnumerator Start()
-    {
-        yield return Cast();
-    }
+    //IEnumerator Start()
+    //{
+    //    yield return Cast();
+    //}
 
-    IEnumerator Cast()
-    {
-        yield return Activate();
-    }
+    //IEnumerator Cast()
+    //{
+    //    yield return Activate();
+    //}
 
-    IEnumerator Activate()
-    {
-        yield return Finish();
-    }
+    //IEnumerator Activate()
+    //{
+    //    yield return Finish();
+    //}
 
-    IEnumerator Finish()
-    {
-        yield return End();
-    }
+    //IEnumerator Finish()
+    //{
+    //    yield return End();
+    //}
 
-    IEnumerator End()
-    {
-        yield return Start();
-    }
+    //IEnumerator End()
+    //{
+    //    yield return Start();
+    //}
 }
