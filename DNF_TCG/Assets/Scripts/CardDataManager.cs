@@ -24,6 +24,8 @@ public class CardDataManager : MonoBehaviour
         }
     }
 
+    public Dictionary<int, CardData> CardDataDic = new Dictionary<int, CardData>();
+
     public List<CardData> Deck1 = new List<CardData>();
     public List<CardData> Deck2 = new List<CardData>();
 

@@ -53,7 +53,7 @@ public class PlayerInfo : MonoBehaviour
     {
         while (0 != cardList.Count)
         {
-            int index = 0;//Random.Range(0, cardList.Count - 1);
+            int index = 0;
             CardDic[SlotType.Deck].Add(cardList[index]);
             cardList.RemoveAt(index);
         }
@@ -72,6 +72,19 @@ public class PlayerInfo : MonoBehaviour
         }
 
         return CardDic[SlotType.Deck];
+    }
+
+    public void SetDeckData(List<CardData> cardDataList)
+    {
+        int i = 0;
+        while (0 != cardDataList.Count)
+        {
+            int index = Random.Range(0, cardDataList.Count - 1);
+            Card card = CardDic[SlotType.Deck][i++];
+            card.data = cardDataList[index];
+            card.InitCard();
+            cardDataList.RemoveAt(index);
+        }
     }
 
     public void Draw(int count)

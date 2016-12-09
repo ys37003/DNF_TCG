@@ -48,27 +48,51 @@ public class GameManager : MonoBehaviour
         if (!NetworkManager.Instance.IsServer)
         {
             List<Card> deck = Info[0].InitDeckData(CardDataManager.Instance.GetDeck(1));
+            List<int> cardNoList = new List<int>();
+            foreach(Card c in deck)
+            {
+                cardNoList.Add(c.data.no);
+            }
 
             Packet pack = new Packet();
-            pack.SetObj(deck);
+            pack.SetObj(cardNoList);
 
             Protocol.DeckInit.Send(pack, (packet) =>
             {
-                Info[1].InitDeckData((List<CardData>)packet.GetObj(0));
+                List<int> noList = (List<int>)packet.GetObj(0);
+                List<CardData> dataList = new List<CardData>();
+                foreach(int no in noList)
+                {
+                    dataList.Add(CardDataManager.Instance.Deck2.Find((card) => { return card.no == no; }));
+                }
+
+                Info[1].SetDeckData(dataList);
                 Debug.Log("SendResultCallback");
             });
         }
         else
         {
             List<Card> deck = Info[1].InitDeckData(CardDataManager.Instance.GetDeck(2));
+            List<int> cardNoList = new List<int>();
+            foreach (Card c in deck)
+            {
+                cardNoList.Add(c.data.no);
+            }
 
             Protocol.DeckInit.Receive((packet) =>
             {
-                Info[1].InitDeckData((List<CardData>)packet.GetObj(0));
+                List<int> noList = (List<int>)packet.GetObj(0);
+                List<CardData> dataList = new List<CardData>();
+                foreach (int no in noList)
+                {
+                    dataList.Add(CardDataManager.Instance.Deck2.Find((card) => { return card.no == no; }));
+                }
+
+                Info[1].SetDeckData(dataList);
                 Debug.Log("ReciveResultCallback");
             }, (packet) =>
             {
-                packet.SetObj(deck);
+                packet.SetObj(cardNoList);
                 Debug.Log("ReciveReturnCallback");
             });
         }
