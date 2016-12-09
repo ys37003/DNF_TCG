@@ -57,6 +57,12 @@ public class GameManager : MonoBehaviour
         StepList[3].time = 60;
         StepList[4].time = 60;
 
+        EventDelegate.Add(StepList[0].BtnNext.onClick, () => { StopCoroutine("IStart"); StartCoroutine("Cast"); });
+        EventDelegate.Add(StepList[1].BtnNext.onClick, () => { StopCoroutine("Cast"); StartCoroutine("Activate"); });
+        EventDelegate.Add(StepList[2].BtnNext.onClick, () => { StopCoroutine("Activate"); StartCoroutine("Finish"); });
+        EventDelegate.Add(StepList[3].BtnNext.onClick, () => { StopCoroutine("Finish"); StartCoroutine("End"); });
+        EventDelegate.Add(StepList[4].BtnNext.onClick, () => { StopCoroutine("End"); StartCoroutine("Wait"); NextPhase(); });
+
         if (!NetworkManager.Instance.IsServer)
         {
             List<Card> deck = Info[0].InitDeckData(CardDataManager.Instance.GetDeck(1));
