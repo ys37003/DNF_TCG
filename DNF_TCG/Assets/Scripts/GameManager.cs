@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         EventDelegate.Add(StepList[1].BtnNext.onClick, () => { StopCoroutine("Cast"); StartCoroutine("Activate"); });
         EventDelegate.Add(StepList[2].BtnNext.onClick, () => { StopCoroutine("Activate"); StartCoroutine("Finish"); });
         EventDelegate.Add(StepList[3].BtnNext.onClick, () => { StopCoroutine("Finish"); StartCoroutine("End"); });
-        EventDelegate.Add(StepList[4].BtnNext.onClick, () => { StopCoroutine("End"); StartCoroutine("Wait"); NextPhase(); });
+        EventDelegate.Add(StepList[4].BtnNext.onClick, () => { StopCoroutine("End"); NextPhase(); StartCoroutine("Wait"); });
 
         if (!NetworkManager.Instance.IsServer)
         {
@@ -202,7 +202,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        StepList[(int)Phase.End].onClickNext();
+        StepList[(int)Phase.End - 1].onClickNext();
         yield return IStart();
     }
 
