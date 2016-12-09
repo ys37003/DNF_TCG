@@ -24,8 +24,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    private PlayerInfo[] Info = null;
+    public PlayerInfo[] Info = null;
 
     public enum Phase
     {
@@ -39,10 +38,11 @@ public class GameManager : MonoBehaviour
     }
 
     public List<Step> StepList = new List<Step>();
-    private Phase phase = Phase.Ready;
+    public Phase phase { get; private set; }
 
     void Awake()
     {
+        phase = Phase.Ready;
         CardDataManager instnace = CardDataManager.Instance;
     }
 
@@ -121,6 +121,32 @@ public class GameManager : MonoBehaviour
         }
 
         StartCoroutine("Ready");
+        StartCoroutine("MoveLoop");
+    }
+
+    IEnumerator MoveLoop()
+    {
+        bool Call = true;
+        int cardNumber = -1;
+        int to = 0;
+        while (true)
+        {
+            if (cardNumber != -1)
+            {
+                Info[1].Move(cardNumber, to);
+            }
+
+            if (Call)
+            {
+                Call = false;
+                Protocol.Move.Receive((packet) =>
+                {
+                    cardNumber = packet.GetInt(0);
+                    to = packet.GetInt(1);
+                    Call = true;
+                }, null, null);
+            }
+        }
     }
 
     IEnumerator Ready()

@@ -63,8 +63,8 @@ public class PlayerInfo : MonoBehaviour
         {
             int index = Random.Range(0, cardDataList.Count - 1);
             Card card = CardDic[SlotType.Deck][i++];
+            card.number = index;
             card.data = cardDataList[index];
-            card.InitCard();
             cardDataList.RemoveAt(index);
         }
 
@@ -78,8 +78,8 @@ public class PlayerInfo : MonoBehaviour
         {
             int index = 0;
             Card card = CardDic[SlotType.Deck][i++];
+            card.number = index;
             card.data = cardDataList[index];
-            card.InitCard();
             cardDataList.RemoveAt(index);
         }
     }
@@ -97,5 +97,19 @@ public class PlayerInfo : MonoBehaviour
         }
 
         CardDic[SlotType.Deck].RemoveRange(DeckSize - count + 1, count);
+    }
+
+    public void Move(int number, int to)
+    {
+        for(SlotType t = SlotType.Hand; t <= SlotType.Monster; ++t)
+        {
+            foreach (Card c in CardDic[t])
+            {
+                if (c.number == number)
+                {
+                    c.Move(CardSlotDic[(SlotType)to].transform);
+                }
+            }
+        }
     }
 }

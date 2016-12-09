@@ -20,6 +20,7 @@ public class Card : MonoBehaviour
     public CardData data { get; set; }
 
     public string text;
+    public int number;
 
     void Awake()
     {
@@ -37,14 +38,31 @@ public class Card : MonoBehaviour
         string str = string.Format("CardList/Act1/Act1_{0}", data.act_no.ToString("000"));
         Texture2D t = (Texture2D)Resources.Load(str);
         CardFront.sprite = Sprite.Create(t, new Rect(0, 0, t.width, t.height), Vector3.one * 0.5f);
-    }
+        State = CardState.Hand;
 
-    public void InitCard()
-    {
-    }
-
-    public virtual void Action()
-    {
+        switch (data.card_type)
+        {
+            case CardType.LevelUp:
+                text = "레벨업";
+                break;
+            case CardType.Skill:
+                text = "시전";
+                break;
+            case CardType.Effect:
+                text = "세트";
+                break;
+            case CardType.Weapon:
+                text = "장착";
+                break;
+            case CardType.Armor:
+                text = "장착";
+                break;
+            case CardType.Monster:
+                text = "소환";
+                break;
+            default:
+                break;
+        }
     }
 
     public void Open()
@@ -70,6 +88,44 @@ public class Card : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
     }
 
+    public virtual void Action()
+    {
+        if (IsEnemy)
+            return;
+
+        int to = 0;
+        switch (data.card_type)
+        {
+            case CardType.LevelUp:
+                to = 3;
+                break;
+            case CardType.Skill:
+                to = 5;
+                break;
+            case CardType.Effect:
+                to = 4;
+                break;
+            case CardType.Weapon:
+                to = 6;
+                break;
+            case CardType.Armor:
+                to = 7;
+                break;
+            case CardType.Monster:
+                to = 8;
+                break;
+            default:
+                break;
+        }
+
+        GameManager.Instance.Info[0].Move(number, to);
+
+        Packet pck = new Packet();
+        pck.SetInt(number);
+        pck.SetInt(to);
+
+        Protocol.Move.Send(pck, null);
+    }
 
     /// <summary>
     /// cast, levelup, set, equip...
@@ -106,30 +162,13 @@ public class Card : MonoBehaviour
 
     private void onClickCard()
     {
+        if (IsEnemy)
+            return;
+
+        if (GameManager.Instance.phase == GameManager.Phase.Wait)
+            return;
+
         CardController.Instance.Show(this);
-        //TestReceive();
-    }
-
-    public void TestSend()
-    {
-        //Packet pck = new Packet();
-        //pck.SetString("testString");
-        //pck.SetFloat(1.4f);
-
-        //Protocol.Test1.Send(new Packet(), (packet) =>
-        //{
-        //    Debug.Log("receiveResultCallback No.0, " + packet.GetString(0));
-        //    Debug.Log("receiveResultCallback No.1, " + packet.GetFloat(1));
-        //});
-    }
-
-    public void TestReceive()
-    {
-        //Protocol.Test2.Receive((packet) =>
-        //{
-        //    Debug.Log("receiveResultCallback No.0, " + packet.GetString(0));
-        //    Debug.Log("receiveResultCallback No.1, " + packet.GetFloat(1));
-        //});
     }
 
     /*

@@ -19,6 +19,7 @@ public class Protocol
     public static Protocol DECK_INIT = new Protocol(1, "DECK_INIT");
     public static Protocol DRAW = new Protocol(2, "DRAW");
     public static Protocol TURN = new Protocol(3, "TURN");
+    public static Protocol Move = new Protocol(4, "Move");
 
     public static Dictionary<int, ResultCallback> SendResultCallbackDic = new Dictionary<int, ResultCallback>();
     public static Dictionary<int, ResultCallback> ReceiveResultCallbackDic = new Dictionary<int, ResultCallback>();
