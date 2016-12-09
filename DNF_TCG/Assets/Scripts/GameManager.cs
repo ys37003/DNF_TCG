@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour
         while (phase == Phase.Ready)
             yield return null;
 
+        int result = 0;
         if(NetworkManager.Instance.IsServer)
         {
             Packet pck = new Packet();
@@ -124,8 +125,7 @@ public class GameManager : MonoBehaviour
 
             Protocol.DRAW.Send(pck, (packet) =>
             {
-                Info[0].StartCoroutine(Info[0].IDraw(5));
-                Info[1].StartCoroutine(Info[1].IDraw(packet.GetInt(0)));
+                result = packet.GetInt(0);
             });
 
             phase = Phase.Start;
@@ -137,19 +137,25 @@ public class GameManager : MonoBehaviour
 
             Protocol.DRAW.Send(pck, (packet) =>
             {
-                Info[0].StartCoroutine(Info[0].IDraw(5));
-                Info[1].StartCoroutine(Info[1].IDraw(packet.GetInt(0)));
+                result = packet.GetInt(0);
             });
 
             phase = Phase.Wait;
         }
 
+        while (result == 0)
+            yield return null;
+
         switch (phase)
         {
             case Phase.Wait:
+                Info[0].StartCoroutine(Info[0].IDraw(5));
+                Info[1].StartCoroutine(Info[1].IDraw(result));
                 yield return Wait();
                 break;
             case Phase.Start:
+                Info[0].StartCoroutine(Info[0].IDraw(5));
+                Info[1].StartCoroutine(Info[1].IDraw(result));
                 yield return IStart();
                 break;
         }
