@@ -12,6 +12,7 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField]
     private GameObject goField = null, goHand = null;
 
+    public bool isEnemy = false;
     public int LifePoint { get; private set; }
     public int DeckSize { get { return CardDic[SlotType.Deck].Count - 1; } }
 
@@ -32,11 +33,6 @@ public class PlayerInfo : MonoBehaviour
         InitDeck(new List<Card>(CardSlotDic[SlotType.Deck].transform.GetComponentsInChildren<Card>()));
     }
 
-    void Start()
-    {
-        //StartCoroutine("DumyDraw");
-    }
-
     public IEnumerator IDraw(int count)
     {
         yield return new WaitForSeconds(4);
@@ -54,6 +50,7 @@ public class PlayerInfo : MonoBehaviour
         while (0 != cardList.Count)
         {
             int index = 0;
+            cardList[index].IsEnemy = isEnemy;
             CardDic[SlotType.Deck].Add(cardList[index]);
             cardList.RemoveAt(index);
         }
@@ -94,6 +91,8 @@ public class PlayerInfo : MonoBehaviour
             Card card = CardDic[SlotType.Deck][DeckSize - i];
             CardDic[SlotType.Hand].Add(card);
             card.Move(CardSlotDic[SlotType.Hand].transform);
+            if (!isEnemy)
+                card.Open();
         }
 
         CardDic[SlotType.Deck].RemoveRange(DeckSize - count + 1, count);

@@ -47,6 +47,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Info[0].isEnemy = false;
+        Info[1].isEnemy = true;
+
         if (!NetworkManager.Instance.IsServer)
         {
             List<Card> deck = Info[0].InitDeckData(CardDataManager.Instance.GetDeck(1));
@@ -163,31 +166,48 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Wait()
     {
+        bool turnEnd = false;
+
+        Protocol.TURN_END.Receive(null, null, (packet) =>
+        {
+            turnEnd = true;
+        });
+
+        while(!turnEnd)
+            yield return null;
+
         yield return IStart();
     }
 
     IEnumerator IStart()
     {
+        yield return new WaitForSeconds(300);
         yield return Cast();
     }
 
     IEnumerator Cast()
     {
+        yield return new WaitForSeconds(300);
         yield return Activate();
     }
 
     IEnumerator Activate()
     {
+        yield return new WaitForSeconds(300);
         yield return Finish();
     }
 
     IEnumerator Finish()
     {
+        yield return new WaitForSeconds(300);
         yield return End();
     }
 
     IEnumerator End()
     {
+        Protocol.TURN_END.Send(new Packet(), null);
+
+        yield return new WaitForSeconds(300);
         yield return Wait();
     }
 }

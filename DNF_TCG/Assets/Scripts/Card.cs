@@ -13,11 +13,12 @@ public class Card : MonoBehaviour
 
     public SpriteRenderer CardFront, CardBack;
     public UIButton Button;
+    public Animation ani;
 
+    public bool IsEnemy = false;
     public CardState State = CardState.Deck;
     public CardData data { get; set; }
 
-    public bool isEnemy;
     public string text;
 
     void Awake()
@@ -45,8 +46,14 @@ public class Card : MonoBehaviour
     {
     }
 
+    public void Open()
+    {
+        ani.Play("CardOpen");
+    }
+
     public void Reverse()
     {
+        ani.Play("CardReverse");
     }
 
     public void Move(Transform target)
