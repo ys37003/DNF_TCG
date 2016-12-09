@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
 
     public enum Phase
     {
+        Ready,
+        Wait,
         Start,
         Cast,
         Activate,
@@ -36,7 +38,7 @@ public class GameManager : MonoBehaviour
         End,
     }
 
-    private Phase phase;
+    private Phase phase = Phase.Ready;
 
     void Awake()
     {
@@ -70,6 +72,7 @@ public class GameManager : MonoBehaviour
 
                 Info[1].SetDeckData(dataList);
                 Debug.Log("SendResultCallback");
+                NextPhase();
             });
         }
         else
@@ -98,8 +101,10 @@ public class GameManager : MonoBehaviour
             {
                 packet.SetObj(cardNoList);
                 Debug.Log("ReciveReturnCallback");
-            });
+            }, (packet) => { NextPhase(); });
         }
+
+        StartCoroutine("Ready");
     }
 
     public void NextPhase()
@@ -107,28 +112,76 @@ public class GameManager : MonoBehaviour
         phase++;
     }
 
-    //IEnumerator Start()
-    //{
-    //    yield return Cast();
-    //}
+    IEnumerator Ready()
+    {
+        while (phase == Phase.Ready)
+            yield return null;
 
-    //IEnumerator Cast()
-    //{
-    //    yield return Activate();
-    //}
+        if(NetworkManager.Instance.IsServer)
+        {
+            Packet pck = new Packet();
+            pck.SetInt(5);
 
-    //IEnumerator Activate()
-    //{
-    //    yield return Finish();
-    //}
+            Protocol.DRAW.Send(pck, (packet) =>
+            {
+                Info[0].StartCoroutine(Info[0].IDraw(5));
+                Info[1].StartCoroutine(Info[1].IDraw(packet.GetInt(0)));
+            });
 
-    //IEnumerator Finish()
-    //{
-    //    yield return End();
-    //}
+            phase = Phase.Start;
+        }
+        else
+        {
+            Packet pck = new Packet();
+            pck.SetInt(6);
 
-    //IEnumerator End()
-    //{
-    //    yield return Start();
-    //}
+            Protocol.DRAW.Send(pck, (packet) =>
+            {
+                Info[0].StartCoroutine(Info[0].IDraw(5));
+                Info[1].StartCoroutine(Info[1].IDraw(packet.GetInt(0)));
+            });
+
+            phase = Phase.Wait;
+        }
+
+        switch (phase)
+        {
+            case Phase.Wait:
+                yield return Wait();
+                break;
+            case Phase.Start:
+                yield return IStart();
+                break;
+        }
+    }
+
+    IEnumerator Wait()
+    {
+        yield return IStart();
+    }
+
+    IEnumerator IStart()
+    {
+        yield return Cast();
+    }
+
+    IEnumerator Cast()
+    {
+        yield return Activate();
+    }
+
+    IEnumerator Activate()
+    {
+        yield return Finish();
+    }
+
+    IEnumerator Finish()
+    {
+        yield return End();
+    }
+
+    IEnumerator End()
+    {
+        yield return Wait();
+    }
 }

@@ -37,11 +37,11 @@ public class PlayerInfo : MonoBehaviour
         //StartCoroutine("DumyDraw");
     }
 
-    IEnumerator DumyDraw()
+    public IEnumerator IDraw(int count)
     {
         yield return new WaitForSeconds(4);
 
-        for (int i = 0; i < 6; ++i)
+        for (int i = 0; i < count; ++i)
         {
             Draw(1);
             yield return new WaitForSeconds(0.5f);
@@ -79,7 +79,7 @@ public class PlayerInfo : MonoBehaviour
         int i = 0;
         while (0 != cardDataList.Count)
         {
-            int index = 0; // Random.Range(0, cardDataList.Count - 1);
+            int index = 0;
             Card card = CardDic[SlotType.Deck][i++];
             card.data = cardDataList[index];
             card.InitCard();
