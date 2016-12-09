@@ -16,6 +16,7 @@ public class Step : MonoBehaviour
 
     public IEnumerator Timer()
     {
+        BtnNext.isEnabled = true;
         TexTimer.gameObject.SetActive(true);
         TexTimer.fillAmount = 1;
 
@@ -28,11 +29,13 @@ public class Step : MonoBehaviour
             yield return null;
         }
 
+        BtnNext.isEnabled = false;
         TexTimer.gameObject.SetActive(false);
     }
 
     public void onClickNext()
     {
+        BtnNext.isEnabled = false;
         TexTimer.gameObject.SetActive(false);
         StopCoroutine("TImer");
     }
