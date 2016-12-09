@@ -177,10 +177,10 @@ public class GameManager : MonoBehaviour
         Phase now = Phase.Ready;
         Phase before = now;
 
-        Protocol.TURN.Receive(null, null, (packet) =>
+        Protocol.TURN.Receive((packet) =>
         {
             now = (Phase)packet.GetInt(0);
-        });
+        }, null, null);
 
         while (now != Phase.Wait)
         {

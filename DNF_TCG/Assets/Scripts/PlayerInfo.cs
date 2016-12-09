@@ -91,6 +91,7 @@ public class PlayerInfo : MonoBehaviour
             Card card = CardDic[SlotType.Deck][DeckSize - i];
             CardDic[SlotType.Hand].Add(card);
             card.Move(CardSlotDic[SlotType.Hand].transform);
+            card.Button.isEnabled = true;
             if (!isEnemy)
                 card.Open();
         }

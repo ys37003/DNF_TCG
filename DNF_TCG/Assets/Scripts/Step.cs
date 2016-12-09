@@ -11,6 +11,7 @@ public class Step : MonoBehaviour
 
     void Awake()
     {
+        BtnNext.isEnabled = false;
         EventDelegate.Add(BtnNext.onClick, onClickNext);
     }
 
@@ -20,13 +21,10 @@ public class Step : MonoBehaviour
         TexTimer.gameObject.SetActive(true);
         TexTimer.fillAmount = 1;
 
-        float startTime = Time.time;
-        float playTime = startTime;
-        while (Time.time < time + startTime)
+        for(int i = 0; i< time; ++i)
         {
-            playTime = Time.time;
-            TexTimer.fillAmount -= (Time.time - playTime) / time;
-            yield return null;
+            TexTimer.fillAmount -= 1.0f / time;
+            yield return new WaitForSeconds(1);
         }
 
         BtnNext.isEnabled = false;

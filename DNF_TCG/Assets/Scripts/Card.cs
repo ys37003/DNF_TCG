@@ -33,6 +33,7 @@ public class Card : MonoBehaviour
         while (data == null)
             yield return null;
 
+        Button.isEnabled = false;
         string str = string.Format("CardList/Act1/Act1_{0}", data.act_no.ToString("000"));
         Texture2D t = (Texture2D)Resources.Load(str);
         CardFront.sprite = Sprite.Create(t, new Rect(0, 0, t.width, t.height), Vector3.one * 0.5f);
