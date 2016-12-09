@@ -193,10 +193,10 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(StepList[(int)now - 1].Timer());
                 before = now;
 
-                Protocol.TURN.Receive(null, null, (packet) =>
+                Protocol.TURN.Receive((packet) =>
                 {
                     now = (Phase)packet.GetInt(0);
-                });
+                }, null, null);
             }
 
             yield return null;
