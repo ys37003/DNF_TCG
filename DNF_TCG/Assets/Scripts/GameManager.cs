@@ -30,14 +30,15 @@ public class GameManager : MonoBehaviour
     public enum Phase
     {
         Ready,
-        Wait,
         Start,
         Cast,
         Activate,
         Finish,
         End,
+        Wait,
     }
 
+    public List<Step> StepList = new List<Step>();
     private Phase phase = Phase.Ready;
 
     void Awake()
@@ -49,6 +50,12 @@ public class GameManager : MonoBehaviour
     {
         Info[0].isEnemy = false;
         Info[1].isEnemy = true;
+
+        StepList[0].time = 60;
+        StepList[1].time = 120;
+        StepList[2].time = 120;
+        StepList[3].time = 60;
+        StepList[4].time = 60;
 
         if (!NetworkManager.Instance.IsServer)
         {
@@ -75,7 +82,7 @@ public class GameManager : MonoBehaviour
 
                 Info[1].SetDeckData(dataList);
                 Debug.Log("SendResultCallback");
-                NextPhase();
+                phase++;
             });
         }
         else
@@ -104,15 +111,10 @@ public class GameManager : MonoBehaviour
             {
                 packet.SetObj(cardNoList);
                 Debug.Log("ReciveReturnCallback");
-            }, (packet) => { NextPhase(); });
+            }, (packet) => { phase++; });
         }
 
         StartCoroutine("Ready");
-    }
-
-    public void NextPhase()
-    {
-        phase++;
     }
 
     IEnumerator Ready()
@@ -152,7 +154,7 @@ public class GameManager : MonoBehaviour
         switch (phase)
         {
             case Phase.Wait:
-                Info[0].StartCoroutine(Info[0].IDraw(5));
+                Info[0].StartCoroutine(Info[0].IDraw(6));
                 Info[1].StartCoroutine(Info[1].IDraw(result));
                 yield return Wait();
                 break;
@@ -166,48 +168,100 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Wait()
     {
-        bool turnEnd = false;
+        Phase now = Phase.Ready;
+        Phase before = now;
 
-        Protocol.TURN_END.Receive(null, null, (packet) =>
+        Protocol.TURN.Receive(null, null, (packet) =>
         {
-            turnEnd = true;
+            now = (Phase)packet.GetInt(0);
         });
 
-        while(!turnEnd)
+        while (now != Phase.Wait)
+        {
+            if(before != now)
+            {
+                if ((int)now - 2 >= 0)
+                {
+                    StepList[(int)now - 2].onClickNext();
+                }
+                StartCoroutine(StepList[(int)now - 1].Timer());
+                before = now;
+
+                Protocol.TURN.Receive(null, null, (packet) =>
+                {
+                    now = (Phase)packet.GetInt(0);
+                });
+            }
+
             yield return null;
+        }
 
         yield return IStart();
     }
 
     IEnumerator IStart()
     {
-        yield return new WaitForSeconds(300);
+        phase = Phase.Start;
+        NextPhase();
+
+        yield return new WaitForSeconds(StepList[0].time);
+        StepList[0].onClickNext();
         yield return Cast();
     }
 
     IEnumerator Cast()
     {
-        yield return new WaitForSeconds(300);
+        NextPhase();
+
+        yield return new WaitForSeconds(StepList[1].time);
+        StepList[1].onClickNext();
         yield return Activate();
     }
 
     IEnumerator Activate()
     {
-        yield return new WaitForSeconds(300);
+        NextPhase();
+
+        yield return new WaitForSeconds(StepList[2].time);
+        StepList[2].onClickNext();
         yield return Finish();
     }
 
     IEnumerator Finish()
     {
-        yield return new WaitForSeconds(300);
+        NextPhase();
+
+        yield return new WaitForSeconds(StepList[3].time);
+        StepList[3].onClickNext();
         yield return End();
     }
 
     IEnumerator End()
     {
-        Protocol.TURN_END.Send(new Packet(), null);
+        NextPhase();
 
-        yield return new WaitForSeconds(300);
+        yield return new WaitForSeconds(StepList[4].time);
+        StepList[4].onClickNext();
+
+        NextPhase();
         yield return Wait();
+    }
+
+    private void NextPhase()
+    {
+        if ((int)phase - 2 >= 0)
+        {
+            StepList[(int)phase - 2].onClickNext();
+        }
+
+        if (phase != Phase.End)
+        {
+            StartCoroutine(StepList[(int)phase - 1].Timer());
+        }
+
+        Packet pck = new Packet();
+        pck.SetInt((int)phase++);
+
+        Protocol.TURN.Send(pck, null);
     }
 }
