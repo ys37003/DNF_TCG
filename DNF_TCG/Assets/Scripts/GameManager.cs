@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -42,26 +43,28 @@ public class GameManager : MonoBehaviour
 
         if (!NetworkManager.Instance.IsServer)
         {
+            List<Card> deck = Info[0].InitDeckData(CardDataManager.Instance.GetDeck(1));
+
             Packet pack = new Packet();
-            pack.SetInt(2);
-            pack.SetInt(1);
+            pack.SetObj(deck);
 
             Protocol.DeckInit.Send(pack, (packet) =>
             {
+                Info[1].InitDeckData((List<CardData>)packet.GetObj(0));
                 Debug.Log("SendResultCallback");
-                Info[0].InitDeckData(CardDataManager.Instance.GetDeck(1));
-                Info[1].InitDeckData(CardDataManager.Instance.GetDeck(2));
             });
         }
         else
         {
+            List<Card> deck = Info[1].InitDeckData(CardDataManager.Instance.GetDeck(0));
+
             Protocol.DeckInit.Receive((packet) =>
             {
+                Info[1].InitDeckData((List<CardData>)packet.GetObj(0));
                 Debug.Log("ReciveResultCallback");
-                Info[0].InitDeckData(CardDataManager.Instance.GetDeck(packet.GetInt(0)));
-                Info[1].InitDeckData(CardDataManager.Instance.GetDeck(packet.GetInt(1)));
             }, (packet) =>
             {
+                packet.SetObj(deck);
                 Debug.Log("ReciveReturnCallback");
             });
         }

@@ -59,7 +59,7 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
-    public void InitDeckData(List<CardData> cardDataList)
+    public List<Card> InitDeckData(List<CardData> cardDataList)
     {
         int i = 0;
         while (0 != cardDataList.Count)
@@ -69,6 +69,7 @@ public class PlayerInfo : MonoBehaviour
             card.data = cardDataList[index];
             card.InitCard();
         }
+        return CardDic[SlotType.Deck];
     }
 
     public void Draw(int count)

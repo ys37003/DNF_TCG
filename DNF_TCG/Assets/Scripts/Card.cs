@@ -60,10 +60,10 @@ public class Card : MonoBehaviour
         return data;
     }
 
-    public virtual bool Start(CardData data)
-    {
-        return true;
-    }
+    //public virtual bool Start(CardData data)
+    //{
+    //    return true;
+    //}
 
     public virtual bool Cast()
     {

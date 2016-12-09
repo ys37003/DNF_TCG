@@ -49,6 +49,11 @@ public class Packet
 
     #region get/set
     
+    public object GetObj(int no)
+    {
+        return Data[no];
+    }
+
     public bool GetBool(int no)
     {
         return (bool)Data[no];
@@ -67,6 +72,11 @@ public class Packet
     public string GetString(int no)
     {
         return (string)Data[no];
+    }
+
+    public void SetObj(object o)
+    {
+        Data.Add(o);
     }
 
     public void SetBool(bool b)
