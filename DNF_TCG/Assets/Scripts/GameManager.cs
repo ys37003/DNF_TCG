@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
             List<CardData> deck2 = CardDataManager.Instance.Deck2;
 
-            Protocol.DeckInit.Send(pack, (packet) =>
+            Protocol.DECK_INIT.Send(pack, (packet) =>
             {
                 List<int> noList = (List<int>)packet.GetObj(0);
                 List<CardData> dataList = new List<CardData>();
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            List<Card> deck = Info[1].InitDeckData(CardDataManager.Instance.GetDeck(2));
+            List<Card> deck = Info[0].InitDeckData(CardDataManager.Instance.GetDeck(2));
             List<int> cardNoList = new List<int>();
             foreach (Card c in deck)
             {
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
 
             List<CardData> deck1 = CardDataManager.Instance.Deck1;
 
-            Protocol.DeckInit.Receive((packet) =>
+            Protocol.DECK_INIT.Receive((packet) =>
             {
                 List<int> noList = (List<int>)packet.GetObj(0);
                 List<CardData> dataList = new List<CardData>();

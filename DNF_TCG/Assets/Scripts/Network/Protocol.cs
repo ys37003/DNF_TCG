@@ -16,7 +16,7 @@ public class AsyncObject
 
 public class Protocol
 {
-    public static Protocol DeckInit = new Protocol(1, "DECK_INIT");
+    public static Protocol DECK_INIT = new Protocol(1, "DECK_INIT");
 
     public static Dictionary<int, ResultCallback> SendResultCallbackDic = new Dictionary<int, ResultCallback>();
     public static Dictionary<int, ResultCallback> ReceiveResultCallbackDic = new Dictionary<int, ResultCallback>();
@@ -89,8 +89,8 @@ public class Protocol
         Packet rPacket = new Packet();
         rPacket.ProtocolNo = no;
 
-        if (ReceiveReturnCallbackDic[packet.ProtocolNo] != null)
-            ReceiveReturnCallbackDic[packet.ProtocolNo](packet);
+        if (ReceiveReturnCallbackDic[rPacket.ProtocolNo] != null)
+            ReceiveReturnCallbackDic[rPacket.ProtocolNo](rPacket);
 
         byte[] buffer = Packet.Serialize(rPacket);
         AsyncObject returnAo = new AsyncObject(buffer.Length);

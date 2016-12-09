@@ -23,11 +23,22 @@ public class Card : MonoBehaviour
     void Awake()
     {
         EventDelegate.Add(Button.onClick, onClickCard);
+
+        StartCoroutine("Init");
+    }
+
+    IEnumerator Init()
+    {
+        while (data == null)
+            yield return null;
+
+        string str = string.Format("Resources/CardList/Act1/Act1_{0}", data.act_no.ToString("000"));
+        object o = Resources.Load(str);
+        CardFront.sprite = o as Sprite; 
     }
 
     public void InitCard()
     {
-
     }
 
     public virtual void Action()
