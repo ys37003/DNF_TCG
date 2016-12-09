@@ -57,13 +57,15 @@ public class GameManager : MonoBehaviour
             Packet pack = new Packet();
             pack.SetObj(cardNoList);
 
+            List<CardData> deck2 = CardDataManager.Instance.Deck2;
+
             Protocol.DeckInit.Send(pack, (packet) =>
             {
                 List<int> noList = (List<int>)packet.GetObj(0);
                 List<CardData> dataList = new List<CardData>();
                 foreach(int no in noList)
                 {
-                    dataList.Add(CardDataManager.Instance.Deck2.Find((card) => { return card.no == no; }));
+                    dataList.Add(deck2.Find((card) => { return card.no == no; }));
                 }
 
                 Info[1].SetDeckData(dataList);
@@ -79,13 +81,15 @@ public class GameManager : MonoBehaviour
                 cardNoList.Add(c.data.no);
             }
 
+            List<CardData> deck1 = CardDataManager.Instance.Deck1;
+
             Protocol.DeckInit.Receive((packet) =>
             {
                 List<int> noList = (List<int>)packet.GetObj(0);
                 List<CardData> dataList = new List<CardData>();
                 foreach (int no in noList)
                 {
-                    dataList.Add(CardDataManager.Instance.Deck2.Find((card) => { return card.no == no; }));
+                    dataList.Add(deck1.Find((card) => { return card.no == no; }));
                 }
 
                 Info[1].SetDeckData(dataList);

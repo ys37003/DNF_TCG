@@ -79,7 +79,7 @@ public class PlayerInfo : MonoBehaviour
         int i = 0;
         while (0 != cardDataList.Count)
         {
-            int index = Random.Range(0, cardDataList.Count - 1);
+            int index = 0; // Random.Range(0, cardDataList.Count - 1);
             Card card = CardDic[SlotType.Deck][i++];
             card.data = cardDataList[index];
             card.InitCard();
