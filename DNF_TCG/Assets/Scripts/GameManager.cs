@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private PlayerInfo[] Info = new PlayerInfo[2];
+    [SerializeField]
+    private PlayerInfo[] Info = null;
 
     public enum Phase
     {
