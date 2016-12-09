@@ -40,7 +40,10 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         CardDataManager instnace = CardDataManager.Instance;
+    }
 
+    void Start()
+    {
         if (!NetworkManager.Instance.IsServer)
         {
             List<Card> deck = Info[0].InitDeckData(CardDataManager.Instance.GetDeck(1));
@@ -56,7 +59,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            List<Card> deck = Info[1].InitDeckData(CardDataManager.Instance.GetDeck(0));
+            List<Card> deck = Info[1].InitDeckData(CardDataManager.Instance.GetDeck(2));
 
             Protocol.DeckInit.Receive((packet) =>
             {
