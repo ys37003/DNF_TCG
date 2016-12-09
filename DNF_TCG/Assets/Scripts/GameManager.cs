@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
         }
 
         StartCoroutine("Ready");
-        StartCoroutine("MoveLoop");
+        //StartCoroutine("MoveLoop");
     }
 
     IEnumerator MoveLoop()
