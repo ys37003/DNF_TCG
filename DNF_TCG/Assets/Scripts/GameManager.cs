@@ -146,6 +146,7 @@ public class GameManager : MonoBehaviour
                     Call = true;
                 }, null, null);
             }
+            yield return null;
         }
     }
 
