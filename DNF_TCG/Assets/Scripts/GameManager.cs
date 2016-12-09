@@ -177,6 +177,8 @@ public class GameManager : MonoBehaviour
         Phase now = Phase.Ready;
         Phase before = now;
 
+        yield return new WaitForSeconds(0.5f);
+
         Protocol.TURN.Receive((packet) =>
         {
             now = (Phase)packet.GetInt(0);
