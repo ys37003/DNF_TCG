@@ -76,26 +76,26 @@ public class CardDataManager : MonoBehaviour
     {
         for (int i = 0; i < 10; ++i) // 10
         {
-            Deck1.Add(LevelUpCardData.GunnerLevelUp);
+            Deck2.Add(LevelUpCardData.GunnerLevelUp);
         }
 
         for (int i = 0; i < 4; ++i) // 16
         {
-            Deck1.Add(SkillCardData.GunnerAttack1);
-            Deck1.Add(SkillCardData.GunnerAttack2);
-            Deck1.Add(SkillCardData.GunnerAttack3);
-            Deck1.Add(SkillCardData.NormalAttack0);
+            Deck2.Add(SkillCardData.GunnerAttack1);
+            Deck2.Add(SkillCardData.GunnerAttack2);
+            Deck2.Add(SkillCardData.GunnerAttack3);
+            Deck2.Add(SkillCardData.NormalAttack0);
         }
 
         // 4
-        Deck1.Add(EquipCardData.GunnerWeapon1);
-        Deck1.Add(EquipCardData.GunnerWeapon2);
-        Deck1.Add(EquipCardData.GunnerWeapon3);
-        Deck1.Add(EquipCardData.GunnerWeapon4);
+        Deck2.Add(EquipCardData.GunnerWeapon1);
+        Deck2.Add(EquipCardData.GunnerWeapon2);
+        Deck2.Add(EquipCardData.GunnerWeapon3);
+        Deck2.Add(EquipCardData.GunnerWeapon4);
 
         // 3
-        Deck1.Add(EquipCardData.CommonArmor1);
-        Deck1.Add(EquipCardData.CommonArmor2);
-        Deck1.Add(EquipCardData.CommonArmor3);
+        Deck2.Add(EquipCardData.CommonArmor1);
+        Deck2.Add(EquipCardData.CommonArmor2);
+        Deck2.Add(EquipCardData.CommonArmor3);
     }
 }

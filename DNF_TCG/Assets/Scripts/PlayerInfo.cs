@@ -68,7 +68,9 @@ public class PlayerInfo : MonoBehaviour
             Card card = CardDic[SlotType.Deck][i++];
             card.data = cardDataList[index];
             card.InitCard();
+            cardDataList.RemoveAt(index);
         }
+
         return CardDic[SlotType.Deck];
     }
 
