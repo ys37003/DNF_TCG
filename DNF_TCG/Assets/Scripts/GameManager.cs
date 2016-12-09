@@ -202,6 +202,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        StepList[(int)Phase.End].onClickNext();
         yield return IStart();
     }
 
@@ -260,7 +261,7 @@ public class GameManager : MonoBehaviour
             StepList[(int)phase - 2].onClickNext();
         }
 
-        if (phase != Phase.End)
+        if (phase != Phase.Wait)
         {
             StartCoroutine(StepList[(int)phase - 1].Timer());
         }
