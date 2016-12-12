@@ -63,7 +63,7 @@ public class PlayerInfo : MonoBehaviour
         {
             int index = Random.Range(0, cardDataList.Count - 1);
             Card card = CardDic[SlotType.Deck][i++];
-            card.number = index;
+            card.number = i;
             card.data = cardDataList[index];
             cardDataList.RemoveAt(index);
         }
@@ -78,7 +78,7 @@ public class PlayerInfo : MonoBehaviour
         {
             int index = 0;
             Card card = CardDic[SlotType.Deck][i++];
-            card.number = index;
+            card.number = i;
             card.data = cardDataList[index];
             cardDataList.RemoveAt(index);
         }
