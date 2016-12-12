@@ -83,16 +83,10 @@ public class Card : MonoBehaviour
 
     IEnumerator Move_()
     {
-        if(transform.eulerAngles.x > 180)
+        if(!IsEnemy && transform.eulerAngles.x > 180)
         {
             transform.eulerAngles -= Vector3.right * 360;
             TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, 0, 0));
-        }
-
-        if (IsEnemy && State == CardState.Deck)
-        {
-            TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, 180, 0));
-            State = CardState.Hand;
         }
 
         if(IsEnemy && State == CardState.Hand)
@@ -100,6 +94,13 @@ public class Card : MonoBehaviour
             Open();
             TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, 0, 0));
             State = CardState.Field;
+        }
+
+        if (IsEnemy && State == CardState.Deck)
+        {
+            transform.eulerAngles = new Vector3(-30, 180, 0);
+            TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, 180, 0));
+            State = CardState.Hand;
         }
 
         TweenPosition.Begin(gameObject, 0.5f, Vector3.zero);

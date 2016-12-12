@@ -234,7 +234,7 @@ public class GameManager : MonoBehaviour
         }
 
         StopCoroutine("MoveLoop");
-        Info[1].TurnEndDraw();
+        //Info[1].TurnEndDraw();
 
         StepList[(int)Phase.End - 1].onClickNext();
         yield return IStart();
@@ -286,9 +286,8 @@ public class GameManager : MonoBehaviour
         NextPhase();
 
         yield return new WaitForSeconds(StepList[4].time);
-        Info[0].TurnEndDraw();
         StepList[4].onClickNext();
-
+        //Info[0].TurnEndDraw();
         NextPhase();
         yield return Wait();
     }

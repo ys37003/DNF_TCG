@@ -65,6 +65,7 @@ public class PlayerInfo : MonoBehaviour
             Card card = CardDic[SlotType.Deck][i++];
             card.number = i;
             card.data = cardDataList[index];
+            card.IsEnemy = isEnemy;
             cardDataList.RemoveAt(index);
         }
 
@@ -80,6 +81,7 @@ public class PlayerInfo : MonoBehaviour
             Card card = CardDic[SlotType.Deck][i++];
             card.number = i;
             card.data = cardDataList[index];
+            card.IsEnemy = isEnemy;
             cardDataList.RemoveAt(index);
         }
     }
