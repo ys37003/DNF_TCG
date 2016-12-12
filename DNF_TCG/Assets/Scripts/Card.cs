@@ -83,7 +83,11 @@ public class Card : MonoBehaviour
 
     IEnumerator Move_()
     {
-        TweenRotation.Begin(gameObject, 0.5f, new Quaternion(0,0,0,0));
+        if (transform.parent.GetComponent<CardSlot>().Type != CardSlot.SlotType.Hand)
+        {
+            transform.rotation = Quaternion.EulerRotation(-30, 0, 0);
+            TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0,0,0));
+        }
         TweenPosition.Begin(gameObject, 0.5f, Vector3.zero);
         TweenScale.Begin(gameObject, 0.5f, Vector3.one);
         yield return new WaitForSeconds(0.5f);

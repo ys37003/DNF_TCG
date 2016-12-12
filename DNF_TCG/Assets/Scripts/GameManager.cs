@@ -121,7 +121,6 @@ public class GameManager : MonoBehaviour
         }
 
         StartCoroutine("Ready");
-        //StartCoroutine("MoveLoop");
     }
 
     IEnumerator MoveLoop()
@@ -242,15 +241,18 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(StepList[0].time);
         StepList[0].onClickNext();
+
         yield return Cast();
     }
 
     IEnumerator Cast()
     {
         NextPhase();
+        StartCoroutine("MoveLoop");
 
         yield return new WaitForSeconds(StepList[1].time);
         StepList[1].onClickNext();
+
         yield return Activate();
     }
 
@@ -260,6 +262,7 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(StepList[2].time);
         StepList[2].onClickNext();
+
         yield return Finish();
     }
 
@@ -269,6 +272,9 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(StepList[3].time);
         StepList[3].onClickNext();
+
+        StopCoroutine("MoveLoop");
+
         yield return End();
     }
 
