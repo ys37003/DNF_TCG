@@ -33,7 +33,7 @@ public class Step : MonoBehaviour
 
     public void onClickNext()
     {
-        if (GameManager.Instance.phase == GameManager.Phase.Wait)
+        if (UIButton.current == BtnNext && GameManager.Instance.phase == GameManager.Phase.Wait)
             return;
 
         BtnNext.isEnabled = false;

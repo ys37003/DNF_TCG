@@ -86,9 +86,8 @@ public class Card : MonoBehaviour
         if(transform.eulerAngles.x > 180)
         {
             transform.eulerAngles -= Vector3.right * 360;
+            TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, 0, 0));
         }
-
-        TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, transform.eulerAngles.y, 0));
         TweenPosition.Begin(gameObject, 0.5f, Vector3.zero);
         TweenScale.Begin(gameObject, 0.5f, Vector3.one);
         yield return new WaitForSeconds(0.5f);
