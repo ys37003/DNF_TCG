@@ -100,12 +100,13 @@ public class PlayerInfo : MonoBehaviour
             Card card = CardDic[SlotType.Deck][DeckSize - i];
             CardDic[SlotType.Hand].Add(card);
             card.Move(CardSlotDic[SlotType.Hand].transform);
+            CardDic[SlotType.Deck].RemoveAt(DeckSize - i - 1);
             card.Button.isEnabled = true;
             if (!isEnemy)
                 card.Open();
         }
 
-        CardDic[SlotType.Deck].RemoveRange(DeckSize - count + 1, count);
+        //CardDic[SlotType.Deck].RemoveRange(DeckSize - count + 1, count);
     }
 
     public void Move(int number, int to)

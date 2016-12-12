@@ -38,7 +38,7 @@ public class Card : MonoBehaviour
         string str = string.Format("CardList/Act1/Act1_{0}", data.act_no.ToString("000"));
         Texture2D t = (Texture2D)Resources.Load(str);
         CardFront.sprite = Sprite.Create(t, new Rect(0, 0, t.width, t.height), Vector3.one * 0.5f);
-        State = CardState.Hand;
+        State = CardState.Deck;
 
         switch (data.card_type)
         {
@@ -88,6 +88,20 @@ public class Card : MonoBehaviour
             transform.eulerAngles -= Vector3.right * 360;
             TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, 0, 0));
         }
+
+        if (IsEnemy && State == CardState.Deck)
+        {
+            TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, 180, 0));
+            State = CardState.Hand;
+        }
+
+        if(IsEnemy && State == CardState.Hand)
+        {
+            Open();
+            TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, 0, 0));
+            State = CardState.Field;
+        }
+
         TweenPosition.Begin(gameObject, 0.5f, Vector3.zero);
         TweenScale.Begin(gameObject, 0.5f, Vector3.one);
         yield return new WaitForSeconds(0.5f);
