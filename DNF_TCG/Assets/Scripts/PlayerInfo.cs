@@ -86,7 +86,7 @@ public class PlayerInfo : MonoBehaviour
 
     public int TurnEndDraw()
     {
-        int count = CardSlotDic[SlotType.Hand].transform.childCount - 6;
+        int count = 6 - CardSlotDic[SlotType.Hand].transform.childCount;
 
         Draw(count);
 
