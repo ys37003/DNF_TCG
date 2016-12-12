@@ -210,6 +210,7 @@ public class GameManager : MonoBehaviour
             now = (Phase)packet.GetInt(0);
         }, null, null);
 
+        StartCoroutine("MoveLoop");
         while (now != Phase.Wait)
         {
             if(before != now)
@@ -229,6 +230,7 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
+        StopCoroutine("MoveLoop");
 
         StepList[(int)Phase.End - 1].onClickNext();
         yield return IStart();
@@ -248,7 +250,6 @@ public class GameManager : MonoBehaviour
     IEnumerator Cast()
     {
         NextPhase();
-        StartCoroutine("MoveLoop");
 
         yield return new WaitForSeconds(StepList[1].time);
         StepList[1].onClickNext();
@@ -272,8 +273,6 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(StepList[3].time);
         StepList[3].onClickNext();
-
-        StopCoroutine("MoveLoop");
 
         yield return End();
     }
