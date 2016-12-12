@@ -98,8 +98,7 @@ public class Card : MonoBehaviour
 
         if (IsEnemy && State == CardState.Deck)
         {
-            transform.eulerAngles = new Vector3(-30, 180, 0);
-            TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, 180, 0));
+            transform.localEulerAngles = new Vector3(-30, 180, 0);
             State = CardState.Hand;
         }
 
