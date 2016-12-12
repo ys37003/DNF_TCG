@@ -212,6 +212,7 @@ public class GameManager : MonoBehaviour
         }, null, null);
 
         StartCoroutine("MoveLoop");
+
         while (now != Phase.Wait)
         {
             if(before != now)
@@ -231,7 +232,9 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
+
         StopCoroutine("MoveLoop");
+        Info[1].TurnEndDraw();
 
         StepList[(int)Phase.End - 1].onClickNext();
         yield return IStart();
@@ -283,6 +286,7 @@ public class GameManager : MonoBehaviour
         NextPhase();
 
         yield return new WaitForSeconds(StepList[4].time);
+        Info[0].TurnEndDraw();
         StepList[4].onClickNext();
 
         NextPhase();

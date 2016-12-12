@@ -84,6 +84,15 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
+    public int TurnEndDraw()
+    {
+        int count = CardSlotDic[SlotType.Hand].transform.childCount - 6;
+
+        Draw(count);
+
+        return count;
+    }
+
     public void Draw(int count)
     {
         for (int i = 0; i < count; ++i)
