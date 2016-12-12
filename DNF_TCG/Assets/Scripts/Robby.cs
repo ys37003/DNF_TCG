@@ -54,7 +54,7 @@ public class Robby : MonoBehaviour
             RoomData rd = new RoomData
             (
                 data[i]["ip"].ToString(),
-                (int)data[i]["port"],
+                int.Parse(data[i]["port"].ToString()),
                 data[i]["name"].ToString()
             );
 

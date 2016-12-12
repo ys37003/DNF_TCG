@@ -21,6 +21,7 @@ public class Room : MonoBehaviour
 
     public void SetData(RoomData data)
     {
+        RoomData = data;
         LabelRoomName.text = data.name;
     }
 
