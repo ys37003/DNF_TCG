@@ -19,9 +19,15 @@ public class Robby : MonoBehaviour
 
     void Awake()
     {
+        EventDelegate.Add(BtnEdit.onClick, onClickDeckEdit);
         EventDelegate.Add(BtnRefresh.onClick, onClickRefresh);
         EventDelegate.Add(BtnCreateRoom.onClick, onClickCreateRoom);
         EventDelegate.Add(BtnExit.onClick, onClickExit);
+    }
+
+    private void onClickDeckEdit()
+    {
+        SceneManager.LoadScene("DeckEdit");
     }
 
     private void onClickRefresh()
