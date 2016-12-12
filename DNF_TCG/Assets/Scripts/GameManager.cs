@@ -133,6 +133,7 @@ public class GameManager : MonoBehaviour
             if (cardNumber != -1)
             {
                 Info[1].Move(cardNumber, to);
+                cardNumber = -1;
             }
 
             if (Call)
