@@ -83,11 +83,12 @@ public class Card : MonoBehaviour
 
     IEnumerator Move_()
     {
-        if (transform.parent.GetComponent<CardSlot>().Type != CardSlot.SlotType.Hand)
+        if(transform.eulerAngles.x > 180)
         {
-            transform.rotation = Quaternion.EulerRotation(-30, 0, 0);
-            TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0,0,0));
+            transform.eulerAngles -= Vector3.right * 360;
         }
+
+        TweenRotation.Begin(gameObject, 0.1f, Quaternion.EulerRotation(0, 0, 0));
         TweenPosition.Begin(gameObject, 0.5f, Vector3.zero);
         TweenScale.Begin(gameObject, 0.5f, Vector3.one);
         yield return new WaitForSeconds(0.5f);
