@@ -28,7 +28,7 @@ public class CreateRoom : MonoBehaviour
         IPAddress[] address = Dns.GetHostAddresses(Dns.GetHostName());
         for(int i = 0; i<address.Length; ++i)
         {
-            if (address[i].ToString().Split('.').Length == 3)
+            if (address[i].ToString().Split('.').Length == 4)
             {
                 IP = address[i].ToString();
             }

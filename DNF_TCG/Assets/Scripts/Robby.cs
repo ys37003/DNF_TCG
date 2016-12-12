@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class Robby : MonoBehaviour
 {
-    public UIButton BtnShop, BtnEdit, BtnCreateRoom, BtnRefresh, BtnExit;
+    public UIButton BtnShop, BtnEdit, BtnRefresh, BtnCreateRoom, BtnExit;
 
     [SerializeField]
     private GameObject goCreateRoom;
@@ -31,7 +31,7 @@ public class Robby : MonoBehaviour
 
     private void onClickCreateRoom()
     {
-        gameObject.SetActive(true);
+        goCreateRoom.SetActive(true);
     }
 
     private void onClickExit()
@@ -70,7 +70,6 @@ public class Robby : MonoBehaviour
             }
             else
             {
-                roomList[i].SetData(null);
                 roomList[i].SetActive(false);
             }
         }
