@@ -34,7 +34,7 @@ public class CreateRoom : MonoBehaviour
             }
         }
 
-        NetworkManager.Instance.CreateRoom(IP, UnityEngine.Random.Range(1000, 9999));
+        NetworkManager.Instance.CreateRoom(IP, Port);
         StartCoroutine(ICreateRoom(IP, Port, roomName));
         onClickClose();
         goWait.SetActive(true);
